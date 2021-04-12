@@ -27,3 +27,11 @@ C:\Users\INTMA-KA\Desktop\WpfOPCDAService\IntmaModbusServerService\obj\Release\I
 C:\Users\INTMA-KA\Desktop\WpfOPCDAService\Build\Service\IntmaModbusServerService.exe.config
 C:\Users\INTMA-KA\Desktop\WpfOPCDAService\Build\Service\IntmaModbusServerService.exe
 C:\Users\INTMA-KA\Desktop\WpfOPCDAService\Build\Service\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csprojAssemblyReference.cache
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CoreCompileInputs.cache
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.config
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CopyComplete

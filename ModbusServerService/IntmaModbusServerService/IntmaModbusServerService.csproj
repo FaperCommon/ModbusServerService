@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EasyModbus">
-      <HintPath>..\WpfOPCDAService\Shared\EasyModbus.dll</HintPath>
+      <HintPath>Shared\EasyModbus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

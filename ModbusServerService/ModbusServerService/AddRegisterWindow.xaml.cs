@@ -13,10 +13,12 @@ namespace Intma.ModbusServerService.Configurator
 
             InitializeComponent();
 
-            ObservableCollection<string> types = new ObservableCollection<string>() {"Word","Float","Int"};
+            // ObservableCollection<string> types = new ObservableCollection<string>() {"Word","Float","Int"};
 
-            cmbType.ItemsSource = types;
-            cmbType.SelectedIndex = 0;
+            AddedRegister = new Register();
+            cmbType.ItemsSource = AddedRegister.DataType;
+            //cmbType.SelectedItem = AddedRegister.SelectedDataType;
+            //cmbType.SelectedIndex = 0;
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -30,26 +32,18 @@ namespace Intma.ModbusServerService.Configurator
                 MessageBox.Show("Поле с номером регистра должно быть заполнено");
                 return;
             }
-            var type = cmbType.SelectedValue.ToString();
 
-            AddedRegister = new Register();
-            AddedRegister.Path = tbPath.Text;
             int value;
             if (int.TryParse(tbReg1.Text, out value))
                 AddedRegister.ValueRegister = value;
             else
             {
                 MessageBox.Show("Не удалось распознать регистр");
-                AddedRegister = null;
                 return;
             }
-            if (type == "Float")
-            {
-                AddedRegister.IsFloat = true;
-                //MantissaAdress
-            }
-            AddedRegister.DataType = type;
-
+            //AddedRegister.SelectedDataType = type;
+            AddedRegister.SelectedDataType = cmbType.SelectedItem.ToString();
+            AddedRegister.Path = tbPath.Text;
             MessageBox.Show("Запись успешно добавлена!");
             Close();
         }

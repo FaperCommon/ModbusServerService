@@ -62,7 +62,10 @@
     <Compile Include="AddRegisterWindow.xaml.cs">
       <DependentUpon>AddRegisterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Notify.cs" />
     <Compile Include="Register.cs" />
+    <Compile Include="RegistersViewModel.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Page Include="AddRegisterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

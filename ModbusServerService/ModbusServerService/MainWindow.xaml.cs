@@ -2,43 +2,23 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.Xml.Linq;
 
 namespace Intma.ModbusServerService.Configurator
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        public string _webAdress;
-        public string _port;
-        public string _modbusServerAdress;
-        public int _duration;
-        public ObservableCollection<Register> _registers;
-        public ObservableCollection<Register> Registers { get => _registers; set { _registers = value; OnPropertyChanged(); } }
-        public string WebAdress { get => _webAdress; set { _webAdress = value; OnPropertyChanged(); } }
-        public string Port { get => _port; set { _port = value; OnPropertyChanged(); } }
-        public string ModbusServerAdress { get => _modbusServerAdress; set { _modbusServerAdress = value; OnPropertyChanged(); } }
-        public int Duration { get => _duration; set { _duration = value; OnPropertyChanged(); } }
 
         public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
+        public RegistersViewModel RegVM;
         public MainWindow()
         {
             InitializeComponent();
-            Registers = new ObservableCollection<Register>();
-            DataContext = this;
+            RegVM = new RegistersViewModel();
+            DataContext = RegVM;
             string dir = @"C:\INTMABW500MBTCPService";
             if (!Directory.Exists(dir))
             {
@@ -46,7 +26,7 @@ namespace Intma.ModbusServerService.Configurator
             }
             if (!File.Exists(Filepath))
             {
-                UpdateConfig(Filepath,"10.10.10.10", "502" ,5,"127.0.0.1", new List<Register>(new Register[] { new Register() { Path = "Dx,D0,p0", DataType = "Word", ValueRegister = 0 } }));
+                UpdateConfig(Filepath,"10.10.10.10", "502" ,5,"127.0.0.1", new List<Register>(new Register[] { new Register() { Path = "Dx,D0,p0", SelectedDataType = "Word", ValueRegister = 0 } }));
             }
             ConfingRead(Filepath);
         }
@@ -55,7 +35,7 @@ namespace Intma.ModbusServerService.Configurator
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             try {
-                UpdateConfig(Filepath, WebAdress, Port,Duration,ModbusServerAdress, Registers);
+                UpdateConfig(Filepath, RegVM.WebAdress, RegVM.Port, RegVM.Duration, RegVM.ModbusServerAdress, RegVM.Registers);
                 MessageBox.Show("Конфигурация успешно обновлена!");
             }
             catch(Exception ex)
@@ -68,14 +48,14 @@ namespace Intma.ModbusServerService.Configurator
         {
             var doc = XDocument.Load(filepath);
             var el = doc.Element("config");
-            WebAdress = el.Element("WebAdress").Value;
-            ModbusServerAdress = el.Element("ModbusServerAdress").Value;
-            Port = el.Element("Port").Value;
-            Duration = Int32.Parse(el.Element("Duration").Value);
-            Registers = new ObservableCollection<Register>();
+            RegVM.WebAdress = el.Element("WebAdress").Value;
+            RegVM.ModbusServerAdress = el.Element("ModbusServerAdress").Value;
+            RegVM.Port = el.Element("Port").Value;
+            RegVM.Duration = Int32.Parse(el.Element("Duration").Value);
+            RegVM.Registers = new ObservableCollection<Register>();
             foreach (var reg in el.Element("Registers").Elements())
             {
-                Registers.Add(new Register(reg));
+                RegVM.Registers.Add(new Register(reg));
             }
         }
 
@@ -96,7 +76,7 @@ namespace Intma.ModbusServerService.Configurator
                             new XElement("Mantissa", a.Mantissa),
                             new XElement("MantissaRegister", a.MantissaRegister),
                             new XElement("ValueRegister", a.ValueRegister),
-                            new XElement("DataType", a.DataType), 
+                            new XElement("DataType", a.SelectedDataType), 
                             new XElement("Path", 
                                 a.Path.Split(a.PathDel).Select(path => new XElement(path,path)))))));
             XDocument s = new XDocument(contacts);
@@ -107,19 +87,10 @@ namespace Intma.ModbusServerService.Configurator
         {
             var wA = new AddRegisterWindow();
             wA.ShowDialog();
-            if(wA.AddedRegister != null)
+            if(!String.IsNullOrEmpty(wA.AddedRegister.Path))
             {
-                Registers.Add(wA.AddedRegister);
+                RegVM.Registers.Add(wA.AddedRegister);
             }
         }
-
-        #region Notify
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-        #endregion
     }
 }

@@ -9,9 +9,6 @@ namespace Intma.ModbusServerService
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         static void Main(string[] args)
         {
             if (Environment.UserInteractive)
@@ -28,7 +25,6 @@ namespace Intma.ModbusServerService
                 };
                 ServiceBase.Run(ServicesToRun);
             }
-
         }
     }
 }

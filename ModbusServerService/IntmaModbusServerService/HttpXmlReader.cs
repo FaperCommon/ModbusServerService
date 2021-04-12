@@ -18,10 +18,6 @@ namespace Intma.ModbusServerService
             modbusServer = new ModbusServer();
             modbusClient = new ModbusClient();
 
-            //IRule rule = FirewallManager.Instance.CreateApplicationRule(FirewallManager.Instance.GetProfile().Type, "Service1", FirewallAction.Allow, Assembly.GetExecutingAssembly().Location);
-            //rule.Profiles = FirewallProfiles.Public | FirewallProfiles.Private;
-            //FirewallManager.Instance.Rules.Add(rule);
-
             ReConfigur();
             Console.WriteLine(Port);
             Console.WriteLine(WebAdress);
@@ -45,7 +41,13 @@ namespace Intma.ModbusServerService
         {
             try
             {
-                var doc = XDocument.Load("1.xml");
+                XDocument doc;
+                if (streamReader == null)
+                    doc = XDocument.Load("1.xml");
+                else
+                    doc = XDocument.Load(streamReader, LoadOptions.None);
+
+
                 for(int i = 0; i< Registers.Count; i++)
                 {
                     var arr = Registers[i].Path.Split(Registers[i].PathDel);
@@ -64,7 +66,9 @@ namespace Intma.ModbusServerService
                         Registers[i].Value = Int32.Parse(el.Value.Split('.')[0]);
                 }
 
-                //streamReader.Close();
+                if(streamReader != null)
+                    streamReader.Close();
+
                 return Registers;
             }
             catch (Exception ex)
@@ -73,12 +77,11 @@ namespace Intma.ModbusServerService
                 return null;
             }
         }
-
+        bool first = true;
         public void GetValue()
         {
             try
             {
-                /*
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(WebAdress);
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
@@ -96,18 +99,12 @@ namespace Intma.ModbusServerService
                             {
                                 readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
                             }
-
-                            modbusClient.Connect();
                             foreach (var el in XmlParse(readStream))
                                 WriteValue(el);
-                            modbusClient.Disconnect();
+                            // modbusClient.Disconnect();
                         }
                     }
-                }*/
-                modbusClient.Connect();
-                foreach (var el in XmlParse(null))
-                    WriteValue(el);
-                modbusClient.Disconnect();
+                }
             }
             catch (Exception ex)
             {
@@ -125,7 +122,8 @@ namespace Intma.ModbusServerService
         }
         public void Stop()
         {
-            isEnables = false;//Disp
+            isEnables = false;
+            Dispose();
         }
         public void StartServer()
         {
@@ -137,6 +135,7 @@ namespace Intma.ModbusServerService
                 modbusServer.HoldingRegistersChanged += ModbusServer_CoilsChanged;
             
                 modbusServer.Listen();
+                modbusClient.Connect();///////////
             }
             catch (Exception ex)
             {
@@ -165,7 +164,7 @@ namespace Intma.ModbusServerService
             try
             {
                 Console.WriteLine(writing.Value.ToString() +" " +writing.ValueRegister);
-                modbusClient.WriteMultipleRegisters(writing.ValueRegister, new int[] { writing.Value });
+                modbusClient.WriteSingleRegister(writing.ValueRegister, writing.Value);
             }
             catch (Exception ex)
             {
@@ -178,10 +177,11 @@ namespace Intma.ModbusServerService
         public void Dispose()
         {
             modbusServer.StopListening();
+            modbusClient.Disconnect();
         }
 
 
-        public void ReConfigur() //Вынести в отдельынй метод XML класса
+        public void ReConfigur() //In separate method
         {
             var doc = XDocument.Load(@"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config");
             var root = doc.Root;
