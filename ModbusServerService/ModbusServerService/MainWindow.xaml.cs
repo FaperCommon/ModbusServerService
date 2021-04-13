@@ -12,12 +12,12 @@ namespace Intma.ModbusServerService.Configurator
     public partial class MainWindow : Window
     {
 
-        public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
-        public RegistersViewModel RegVM;
+        public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";//
+        public ConfigViewModel RegVM;
         public MainWindow()
         {
             InitializeComponent();
-            RegVM = new RegistersViewModel();
+            RegVM = new ConfigViewModel();
             DataContext = RegVM;
             string dir = @"C:\INTMABW500MBTCPService";
             if (!Directory.Exists(dir))
@@ -71,14 +71,11 @@ namespace Intma.ModbusServerService.Configurator
                     new XElement("ModbusServerAdress", $"{modbusServerAdress}"),
                     new XElement("Registers", 
                         registers.Select(a => new XElement($"Reg{regNumber++}", 
-                            new XElement("IsFloat", a.IsFloat), 
-                            new XElement("Value", a.Value),
-                            new XElement("Mantissa", a.Mantissa),
-                            new XElement("MantissaRegister", a.MantissaRegister),
+                            new XElement("IsFloat", a.NeedTwoRegisters), 
                             new XElement("ValueRegister", a.ValueRegister),
                             new XElement("DataType", a.SelectedDataType), 
                             new XElement("Path", 
-                                a.Path.Split(a.PathDel).Select(path => new XElement(path,path)))))));
+                                a.Path.Split(Register.PathDel).Select(path => new XElement(path,path)))))));
             XDocument s = new XDocument(contacts);
             s.Save(filepath);
         }

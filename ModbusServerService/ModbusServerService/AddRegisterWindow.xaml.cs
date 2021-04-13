@@ -7,18 +7,12 @@ namespace Intma.ModbusServerService.Configurator
 {
     public partial class AddRegisterWindow : Window
     {
-        public Register AddedRegister;
+        public Register AddedRegister { get; }
         public AddRegisterWindow()
         {
-
             InitializeComponent();
-
-            // ObservableCollection<string> types = new ObservableCollection<string>() {"Word","Float","Int"};
-
             AddedRegister = new Register();
             cmbType.ItemsSource = AddedRegister.DataType;
-            //cmbType.SelectedItem = AddedRegister.SelectedDataType;
-            //cmbType.SelectedIndex = 0;
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -38,10 +32,9 @@ namespace Intma.ModbusServerService.Configurator
                 AddedRegister.ValueRegister = value;
             else
             {
-                MessageBox.Show("Не удалось распознать регистр");
+                MessageBox.Show("Не удалось распознать номер регистра");
                 return;
             }
-            //AddedRegister.SelectedDataType = type;
             AddedRegister.SelectedDataType = cmbType.SelectedItem.ToString();
             AddedRegister.Path = tbPath.Text;
             MessageBox.Show("Запись успешно добавлена!");
@@ -55,7 +48,13 @@ namespace Intma.ModbusServerService.Configurator
 
         private void CmbReg1_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (AddedRegister.NeedTwoRegisters)
+            {
+                int value;
+                //if (int.TryParse(tbReg1.Text, out value))
+                //    AddedRegister.ValueRegister = value;
+                //tbReg2.Text = (value + 1).ToString();////////
+            }
         }
     }
 }

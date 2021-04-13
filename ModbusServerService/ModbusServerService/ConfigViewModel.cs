@@ -8,22 +8,22 @@ using System.Windows.Input;
 
 namespace Intma.ModbusServerService.Configurator
 {
-    public class RegistersViewModel : Notify
+    public class ConfigViewModel : Notify
     {
         public string _webAdress;
         public string _port;
         public string _modbusServerAdress;
         public int _duration;
+        private Register _selectedRegister;
+        public ObservableCollection<Register> _registers;
+
         public string WebAdress { get => _webAdress; set { _webAdress = value; OnPropertyChanged(); } }
         public string Port { get => _port; set { _port = value; OnPropertyChanged(); } }
         public string ModbusServerAdress { get => _modbusServerAdress; set { _modbusServerAdress = value; OnPropertyChanged(); } }
         public int Duration { get => _duration; set { _duration = value; OnPropertyChanged(); } }
 
-
-        public ObservableCollection<Register> _registers;
         public ObservableCollection<Register> Registers { get => _registers; set { _registers = value; OnPropertyChanged(); } }
 
-        private Register _selectedRegister;
         public Register SelectedRegister
         {
             get { return _selectedRegister; }
@@ -51,7 +51,7 @@ namespace Intma.ModbusServerService.Configurator
             }
         }
 
-        public RegistersViewModel()
+        public ConfigViewModel()
         {
             Registers = new ObservableCollection<Register>();
         }

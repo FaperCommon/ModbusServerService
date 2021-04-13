@@ -67,7 +67,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn  Header="Регистр мантиссы" Width="1*" Binding="{Binding MantissaRegister, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn  Header="Второй регистр(*)" Width="1*" Binding="{Binding SecondRegister, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <DataGridTemplateColumn Header="Тип данных">
                         <DataGridTemplateColumn.CellTemplate>

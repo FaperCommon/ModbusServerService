@@ -13,7 +13,7 @@ namespace Intma.ModbusServerService
         {
             if (Environment.UserInteractive)
             {
-                Service1 service1 = new Service1();
+                IntmaModbusServerService service1 = new IntmaModbusServerService();
                 service1.TestStartupAndStop(args);
             }
             else
@@ -21,7 +21,7 @@ namespace Intma.ModbusServerService
                 ServiceBase[] ServicesToRun;
                 ServicesToRun = new ServiceBase[]
                 {
-                new Service1()
+                new IntmaModbusServerService()
                 };
                 ServiceBase.Run(ServicesToRun);
             }

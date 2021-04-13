@@ -13,29 +13,31 @@ namespace Intma.ModbusServerService
     class HttpXmlReader: IDisposable
     {
 
-        public HttpXmlReader()
-        {
-            modbusServer = new ModbusServer();
-            modbusClient = new ModbusClient();
-
-            ReConfigur();
-            Console.WriteLine(Port);
-            Console.WriteLine(WebAdress);
-            Console.WriteLine(ModbusServerAdress);
-            StartServer();
-        }
-
-
-        System.Diagnostics.EventLog eventLog1 = new System.Diagnostics.EventLog();
-
         public string WebAdress { get; private set; }
         public string ModbusServerAdress { get; private set; }
         public int Port { get; private set; }
         public int Duration { get; set; }
 
-        public List<Intma.ModbusServerService.Configurator.Register> Registers;
-        ModbusServer modbusServer;
-        ModbusClient modbusClient;
+        List<Intma.ModbusServerService.Configurator.Register> _registers;
+        ModbusServer _modbusServer;
+        System.Diagnostics.EventLog _eventLog;
+
+        public HttpXmlReader()
+        {
+            _modbusServer = new ModbusServer();
+            if (!System.Diagnostics.EventLog.Exists("IntmaModbusServerService EventLog"))
+                System.Diagnostics.EventLog.CreateEventSource("IntmaModbusServerService", "IntmaModbusServerService EventLog");
+
+            _eventLog = new System.Diagnostics.EventLog("IntmaModbusServerService EventLog");
+            _eventLog.Source = "IntmaModbusServerService";
+
+            ReConfigur();
+
+            Console.WriteLine(Port);
+            Console.WriteLine(WebAdress);
+            Console.WriteLine(ModbusServerAdress);
+            StartServer();
+        }
 
         public List<Intma.ModbusServerService.Configurator.Register> XmlParse(StreamReader streamReader)
         {
@@ -48,36 +50,31 @@ namespace Intma.ModbusServerService
                     doc = XDocument.Load(streamReader, LoadOptions.None);
 
 
-                for(int i = 0; i< Registers.Count; i++)
+                for(int i = 0; i< _registers.Count; i++)
                 {
-                    var arr = Registers[i].Path.Split(Registers[i].PathDel);
+                    var arr = _registers[i].Path.Split(Intma.ModbusServerService.Configurator.Register.PathDel);
                     var el = doc.Element(arr[0]);
                     for(int j = 1; j < arr.Length; j++)
                     {
                         el = el.Element(arr[j]);
                     }
                  
-                    if (Registers[i].IsFloat)
-                    {
-                        Registers[i].Value = Int32.Parse(el.Value.Split('.')[0]);
-                        Registers[i].Mantissa = Int32.Parse(el.Value.Split('.')[1]);
-                    }
-                    else
-                        Registers[i].Value = Int32.Parse(el.Value.Split('.')[0]);
+                    _registers[i].Value = el.Value;
                 }
 
                 if(streamReader != null)
                     streamReader.Close();
 
-                return Registers;
+                return _registers;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Xml Parse ex: " + ex.Message);
+                _eventLog.WriteEntry("Xml Parse ex: " + ex.Message);
                 return null;
             }
         }
-        bool first = true;
+
         public void GetValue()
         {
             try
@@ -101,61 +98,45 @@ namespace Intma.ModbusServerService
                             }
                             foreach (var el in XmlParse(readStream))
                                 WriteValue(el);
-                            // modbusClient.Disconnect();
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Web Read Ex" + ex.Message);
+                Console.WriteLine("Web Read ex: " + ex.Message);
+                _eventLog.WriteEntry("Web Read ex: "  + ex.Message);
+                foreach (var el in XmlParse(null))
+                    WriteValue(el);
             }
         }
-        bool isEnables = true;
-        public void Start()
-        {
-            while (isEnables)
-            {
-                GetValue();
-                Thread.Sleep(Duration * 1000);
-            }
-        }
-        public void Stop()
-        {
-            isEnables = false;
-            Dispose();
-        }
+
         public void StartServer()
         {
             try
             {
-                modbusServer.LocalIPAddress = IPAddress.Parse(ModbusServerAdress);
-                modbusClient = new ModbusClient();
-                modbusClient.IPAddress = ModbusServerAdress;
-                modbusServer.HoldingRegistersChanged += ModbusServer_CoilsChanged;
-            
-                modbusServer.Listen();
-                modbusClient.Connect();///////////
+                _modbusServer.LocalIPAddress = IPAddress.Parse(ModbusServerAdress);
+                _modbusServer.HoldingRegistersChanged += ModbusServer_HRChanged;
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+                _modbusServer.Listen();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Start server ex: "+ ex.Message);
+                _eventLog.WriteEntry("Start server ex: " + ex.Message);
             }
         }
 
-        private void ModbusServer_CoilsChanged(int coil, int numberOfCoils)
+        private void ModbusServer_HRChanged(int hr, int numberOfHR)
         {
             try
             {
-                //MessageBox.Show("ModbusServer_CoilsChanged");
-                //modbusClient.Connect();                                                    //Connect to Server //Write Coils starting with Address 5
-                Console.WriteLine("ModbusServer_CoilsChanged");
-                //Value = modbusClient.ReadHoldingRegisters(Reg, 1)[0].ToString();    //Read 10 Holding Registers from Server, starting with Address 1
-                //modbusClient.Disconnect();                      //Read 10 Coils from Server, starting with address 10
+                Console.WriteLine("ModbusServer_HRChanged");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                _eventLog.WriteEntry("ModbusServer_HRChanged ex:" + ex.Message);
             }
         }
 
@@ -163,23 +144,73 @@ namespace Intma.ModbusServerService
         {
             try
             {
-                Console.WriteLine(writing.Value.ToString() +" " +writing.ValueRegister);
-                modbusClient.WriteSingleRegister(writing.ValueRegister, writing.Value);
+                Console.WriteLine(writing.Value.ToString());
+                byte[] buff4b;
+                if (writing.NeedTwoRegisters)
+                {
+                    if(writing.SelectedDataType == "Float")
+                    {
+                        buff4b = BitConverter.GetBytes(Single.Parse(writing.Value.ToString()));
+                    }
+                    else if (writing.SelectedDataType == "Int")
+                    {
+                        buff4b = BitConverter.GetBytes(Int32.Parse(writing.Value.ToString()));
+                    }
+                    else if (writing.SelectedDataType == "Long")
+                    {
+                        buff4b = BitConverter.GetBytes(long.Parse(writing.Value.ToString()));
+                    }
+                    else
+                        buff4b = BitConverter.GetBytes(short.Parse(writing.Value.ToString()));
+                }
+                else
+                    buff4b = BitConverter.GetBytes(short.Parse(writing.Value.ToString()));
+
+
+
+                if (_modbusServer.holdingRegisters.localArray[writing.ValueRegister] != BitConverter.ToInt16(buff4b,0))
+                {
+                    _modbusServer.holdingRegisters.localArray[writing.ValueRegister] = BitConverter.ToInt16(buff4b, 0);
+                    if(writing.NeedTwoRegisters)
+                    {
+                        _modbusServer.holdingRegisters.localArray[writing.SecondRegister] = BitConverter.ToInt16(buff4b, 2);
+                    }
+                    Console.WriteLine(writing.Value.ToString() + " " + writing.ValueRegister);
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Write reg ex: "+ ex.Message);
+                _eventLog.WriteEntry("Write reg ex: " + ex.Message);
             }
         }
 
-
-
+        bool _isEnables = true;
+        public void Start()
+        {
+            while (_isEnables)
+            {
+                GetValue();
+                Thread.Sleep(Duration * 1000);
+            }
+        }
+        public void Continue()
+        {
+            _isEnables = true;
+        }
+        public void Pause()
+        {
+            _isEnables = false;
+        }
+        public void Stop()
+        {
+            _isEnables = false;
+            Dispose();
+        }
         public void Dispose()
         {
-            modbusServer.StopListening();
-            modbusClient.Disconnect();
+            _modbusServer.StopListening();
         }
-
 
         public void ReConfigur() //In separate method
         {
@@ -189,12 +220,11 @@ namespace Intma.ModbusServerService
             ModbusServerAdress = root.Element("ModbusServerAdress").Value;
             Port = Int32.Parse(root.Element("Port").Value);
             Duration = Int32.Parse(root.Element("Duration").Value);
-            Registers = new List<Intma.ModbusServerService.Configurator.Register>();
+            _registers = new List<Intma.ModbusServerService.Configurator.Register>();
             foreach (var el in root.Element("Registers").Elements())
             {
-                Registers.Add(new Intma.ModbusServerService.Configurator.Register(el));
+                _registers.Add(new Intma.ModbusServerService.Configurator.Register(el));
             }
-
         }
     }
 }

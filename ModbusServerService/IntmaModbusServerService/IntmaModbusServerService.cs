@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Intma.ModbusServerService
 {
-    public partial class Service1 : ServiceBase
+    public partial class IntmaModbusServerService : ServiceBase
     {
-        public Service1()
+        public IntmaModbusServerService()
         {
             InitializeComponent();
             this.CanStop = true;
@@ -31,13 +31,13 @@ namespace Intma.ModbusServerService
 
         protected override void OnPause()
         {
-            httpXmlReader.Stop();
+            httpXmlReader.Pause();
             Thread.Sleep(1000);
         }
         protected override void OnContinue()
         {
             httpXmlReader.ReConfigur();
-            httpXmlReader.Start();
+            httpXmlReader.Continue();
         }
         protected override void OnStop()
         {

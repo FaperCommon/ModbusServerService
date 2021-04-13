@@ -37,4 +37,3 @@ C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\ModbusSer
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\ModbusServerService\obj\Release\IntmaModbusServerServiceConfigurator.csproj.CopyComplete
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\ModbusServerService\obj\Release\IntmaModbusServerServiceConfigurator.exe
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\ModbusServerService\obj\Release\IntmaModbusServerServiceConfigurator.pdb
-C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\ModbusServerService\obj\Release\IntmaModbusServerServiceConfigurator.csprojAssemblyReference.cache
