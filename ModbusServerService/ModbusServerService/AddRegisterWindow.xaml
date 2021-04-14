@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Intma.ModbusServerService.Configurator"
         mc:Ignorable="d"
-        Title="AddRegisterWindow" Height="400" Width="400">
+        WindowStartupLocation="CenterScreen"
+        Title="Добавление регистра" Height="400" Width="400">
     <Grid>
         <Grid >
             <Grid.RowDefinitions>

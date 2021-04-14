@@ -19,7 +19,7 @@ namespace Intma.ModbusServerService.Configurator
         private List<string> _path;
         private string _selectedDataType;
 
-        public int ValueRegister { get => _valueRegister; set { _valueRegister = value; OnPropertyChanged(); } }
+        public int ValueRegister { get => _valueRegister; set { _valueRegister = value; OnPropertyChanged("SecondRegister"); OnPropertyChanged(); } }
 
         public ObservableCollection<string> DataType { get => _dataType; set { _dataType = value; OnPropertyChanged(); } }
 
@@ -50,7 +50,7 @@ namespace Intma.ModbusServerService.Configurator
             Path = string.Join(PathDel.ToString(), reg.Element("Path").Elements().Select(a => a.Value));
             SelectedDataType = reg.Element("DataType").Value;
             ValueRegister = Int32.Parse(reg.Element("ValueRegister").Value);
-            NeedTwoRegisters = Boolean.Parse(reg.Element("IsFloat").Value);
+            NeedTwoRegisters = Boolean.Parse(reg.Element("NeedTwoRegisters").Value);
         }
         public Register()
         {

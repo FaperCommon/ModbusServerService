@@ -1,5 +1,4 @@
-﻿using EasyModbus;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,12 +12,12 @@ namespace Intma.ModbusServerService.Configurator
     {
 
         public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";//
-        public ConfigViewModel RegVM;
+        ConfigViewModel _regVM;
         public MainWindow()
         {
             InitializeComponent();
-            RegVM = new ConfigViewModel();
-            DataContext = RegVM;
+            _regVM = new ConfigViewModel();
+            DataContext = _regVM;
             string dir = @"C:\INTMABW500MBTCPService";
             if (!Directory.Exists(dir))
             {
@@ -26,16 +25,19 @@ namespace Intma.ModbusServerService.Configurator
             }
             if (!File.Exists(Filepath))
             {
-                UpdateConfig(Filepath,"10.10.10.10", "502" ,5,"127.0.0.1", new List<Register>(new Register[] { new Register() { Path = "Dx,D0,p0", SelectedDataType = "Word", ValueRegister = 0 } }));
+                _regVM.UpdateConfig(Filepath);
             }
-            ConfingRead(Filepath);
+            _regVM.ConfingRead(Filepath);
         }
 
-    
+        private void Item_Selected(object sender, RoutedEventArgs e)
+        {
+ //
+        }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             try {
-                UpdateConfig(Filepath, RegVM.WebAdress, RegVM.Port, RegVM.Duration, RegVM.ModbusServerAdress, RegVM.Registers);
+                _regVM.UpdateConfig(Filepath);
                 MessageBox.Show("Конфигурация успешно обновлена!");
             }
             catch(Exception ex)
@@ -44,49 +46,13 @@ namespace Intma.ModbusServerService.Configurator
             }
         }
 
-        public void ConfingRead(string filepath)
-        {
-            var doc = XDocument.Load(filepath);
-            var el = doc.Element("config");
-            RegVM.WebAdress = el.Element("WebAdress").Value;
-            RegVM.ModbusServerAdress = el.Element("ModbusServerAdress").Value;
-            RegVM.Port = el.Element("Port").Value;
-            RegVM.Duration = Int32.Parse(el.Element("Duration").Value);
-            RegVM.Registers = new ObservableCollection<Register>();
-            foreach (var reg in el.Element("Registers").Elements())
-            {
-                RegVM.Registers.Add(new Register(reg));
-            }
-        }
-
-
-        public void UpdateConfig(string filepath, string webAdress, string port, int duration, string modbusServerAdress, IEnumerable<Register> registers)
-        {
-            int regNumber = 1;
-            XElement contacts =
-                new XElement("config",
-                    new XElement("WebAdress", $"{webAdress}"),
-                    new XElement("Port", $"{port}"),
-                    new XElement("Duration", $"{duration}"),
-                    new XElement("ModbusServerAdress", $"{modbusServerAdress}"),
-                    new XElement("Registers", 
-                        registers.Select(a => new XElement($"Reg{regNumber++}", 
-                            new XElement("IsFloat", a.NeedTwoRegisters), 
-                            new XElement("ValueRegister", a.ValueRegister),
-                            new XElement("DataType", a.SelectedDataType), 
-                            new XElement("Path", 
-                                a.Path.Split(Register.PathDel).Select(path => new XElement(path,path)))))));
-            XDocument s = new XDocument(contacts);
-            s.Save(filepath);
-        }
-
         private void AddReg_Click(object sender, RoutedEventArgs e)
         {
-            var wA = new AddRegisterWindow();
+            var wA = new AddWebSourceWindow();
             wA.ShowDialog();
-            if(!String.IsNullOrEmpty(wA.AddedRegister.Path))
+            if (!String.IsNullOrEmpty(wA.AddedWebSource.WebAddress))
             {
-                RegVM.Registers.Add(wA.AddedRegister);
+                _regVM.WebSources.Add(wA.AddedWebSource);
             }
         }
     }

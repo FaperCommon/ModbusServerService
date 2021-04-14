@@ -1,0 +1,96 @@
+﻿<Window x:Class="Intma.ModbusServerService.Configurator.EditWebSourceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Intma.ModbusServerService.Configurator"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="Редактировать подключение" Height="450" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="50"/>
+            <RowDefinition />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel  Grid.Column="0" Margin="10 0 10 0" Orientation="Vertical">
+                <TextBlock>Адрес подключения:</TextBlock>
+                <TextBox Height="25" Text="{Binding WebAddress}"></TextBox>
+            </StackPanel>
+            <StackPanel  Grid.Column="1" Margin="10 0 10 0" Orientation="Vertical">
+                <TextBlock>Частота опроса:</TextBlock>
+                <TextBox Height="25" Text="{Binding Duration}"></TextBox>
+            </StackPanel>
+
+            <StackPanel  Grid.Column="4" Margin="10 0 10 0" Orientation="Vertical">
+                <Button  Margin="0 12 0 0" Height="25" Width="auto" IsEnabled="true" Click="AddReg_Click">
+                    <TextBlock>Добавить</TextBlock>
+                </Button>
+            </StackPanel>
+        </Grid>
+        
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Registers}" SelectedItem="{Binding SelectedRegister}" ScrollViewer.CanContentScroll="False" VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" BorderBrush="LightGray"  AutoGenerateColumns="False" IsReadOnly="True" x:Name="dgRegisters"  >
+                <DataGrid.Columns>
+
+                    <DataGridTemplateColumn Header="Путь"  Width="2*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Header="Регистр"  Width="1*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding ValueRegister, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn  Header="Второй регистр(*)" Width="1*" Binding="{Binding SecondRegister, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <DataGridTemplateColumn Header="Тип данных">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding DataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button IsEnabled="True" Content="X"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                              Path=DataContext.DeleteCommand}"
+                            CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        <!-- Footer-->
+        <Grid Background="#FFF0F0F0"  Grid.Row="2"  HorizontalAlignment="Stretch" Margin="10 0 10 0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"  Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button  Name="Back" Width="80" Click="Accept_Click">
+                    <TextBlock>Применить</TextBlock>
+                </Button>
+                <TextBlock Name="tbCountEntries" Margin="20 0 0 0" VerticalAlignment="Center"></TextBlock>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

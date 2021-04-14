@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+
 namespace Intma.ModbusServerService.Configurator
 {
     public partial class AddRegisterWindow : Window
