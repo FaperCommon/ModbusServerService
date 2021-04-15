@@ -39,7 +39,7 @@ namespace Intma.ModbusServerService
         {
             try
             {
-                foreach(var source in config.WebSources) { 
+                foreach(var source in config.Childs) { 
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(source.WebAddress);
                     using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                     {
@@ -57,7 +57,7 @@ namespace Intma.ModbusServerService
                                 {
                                     readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
                                 }
-                                foreach (var el in XmlParse(readStream, source.Registers))
+                                foreach (var el in XmlParse(readStream, source.Childs))
                                     WriteValue(el);
                             }
                         }
@@ -206,7 +206,7 @@ namespace Intma.ModbusServerService
 
         public void ReConfigur() //In separate method
         {
-            config.UpdateConfig(@"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config");
+            config.ConfingRead(@"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config");
         }
     }
 }

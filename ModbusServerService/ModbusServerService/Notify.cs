@@ -10,7 +10,6 @@ namespace Intma.ModbusServerService.Configurator
 {
     abstract public class Notify: INotifyPropertyChanged
     {
-
         #region Notify
         public event PropertyChangedEventHandler PropertyChanged;
 

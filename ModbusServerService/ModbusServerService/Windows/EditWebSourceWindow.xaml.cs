@@ -12,12 +12,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Intma.ModbusServerService.Configurator
+namespace Intma.ModbusServerService.Configurator.Windows
 {
     /// <summary>
     /// Логика взаимодействия для EditWebSourceWindow.xaml
     /// </summary>
-    public partial class EditWebSourceWindow : Window
+    public partial class EditWebSourceWindow : UserControl
     {
         WebSourceViewModel _wsVM;
         public EditWebSourceWindow(WebSourceViewModel webSource)
@@ -33,7 +33,7 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (!String.IsNullOrEmpty(wA.AddedRegister.Path))
             {
-                _wsVM.Registers.Add(wA.AddedRegister);
+                //_wsVM.Childs.Add(wA.AddedRegister);
             }
         }
 

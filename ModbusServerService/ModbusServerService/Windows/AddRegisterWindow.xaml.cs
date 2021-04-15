@@ -4,11 +4,12 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Intma.ModbusServerService.Configurator
+namespace Intma.ModbusServerService.Configurator.Windows
 {
     public partial class AddRegisterWindow : Window
     {
         public Register AddedRegister { get; }
+        public bool IsAdded { get; set; } = false;
         public AddRegisterWindow()
         {
             InitializeComponent();
@@ -39,6 +40,7 @@ namespace Intma.ModbusServerService.Configurator
             AddedRegister.SelectedDataType = cmbType.SelectedItem.ToString();
             AddedRegister.Path = tbPath.Text;
             MessageBox.Show("Запись успешно добавлена!");
+            IsAdded = true;
             Close();
         }
         

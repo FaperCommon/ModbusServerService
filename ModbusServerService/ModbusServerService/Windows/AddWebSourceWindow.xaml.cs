@@ -12,17 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Intma.ModbusServerService.Configurator
+namespace Intma.ModbusServerService.Configurator.Windows
 {
     public partial class AddWebSourceWindow : Window
     {
         public WebSourceViewModel AddedWebSource { get; }
+        public bool IsAdded { get; set; } = false;
+
+        private bool onEdit;
         public AddWebSourceWindow()
         {
             InitializeComponent();
             AddedWebSource = new WebSourceViewModel();
         }
-
+        public AddWebSourceWindow(WebSourceViewModel addedWebSource)
+        {
+            InitializeComponent();
+            AddedWebSource = addedWebSource;
+            tbDur.Text = AddedWebSource.Duration.ToString();
+            tbAddress.Text = AddedWebSource.WebAddress;
+            tbName.Text = AddedWebSource.Name;
+            onEdit = true;
+            btnAccept.Content = "Принять";
+        }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrEmpty(tbDur.Text))
@@ -35,6 +47,11 @@ namespace Intma.ModbusServerService.Configurator
                 MessageBox.Show("Поле с адресом должно быть заполнено!");
                 return;
             }
+            if (String.IsNullOrEmpty(tbName.Text))
+            {
+                MessageBox.Show("Поле с именем должно быть заполнено!");
+                return;
+            }
             int value;
             if (int.TryParse(tbDur.Text, out value))
                 AddedWebSource.Duration = value;
@@ -44,7 +61,9 @@ namespace Intma.ModbusServerService.Configurator
                 return;
             }
             AddedWebSource.WebAddress = tbAddress.Text;
-            MessageBox.Show("Запись успешно добавлена!");
+            AddedWebSource.Name = tbName.Text;
+            MessageBox.Show(onEdit?"Запись успешно редактирована":"Запись успешно добавлена!");
+            IsAdded = true;
             Close();
         }
 

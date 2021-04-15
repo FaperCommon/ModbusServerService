@@ -71,29 +71,37 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddRegisterWindow.xaml.cs">
+    <Compile Include="Windows\AddRegGroupWindow.xaml.cs">
+      <DependentUpon>AddRegGroupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddRegisterWindow.xaml.cs">
       <DependentUpon>AddRegisterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddWebSourceWindow.xaml.cs">
+    <Compile Include="Windows\AddWebSourceWindow.xaml.cs">
       <DependentUpon>AddWebSourceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditWebSourceWindow.xaml.cs">
+    <Compile Include="Windows\EditWebSourceWindow.xaml.cs">
       <DependentUpon>EditWebSourceWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notify.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="ConfigViewModel.cs" />
+    <Compile Include="RegistersGroupViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="WebSourceViewModel.cs" />
-    <Page Include="AddRegisterWindow.xaml">
+    <Page Include="Windows\AddRegGroupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddWebSourceWindow.xaml">
+    <Page Include="Windows\AddRegisterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditWebSourceWindow.xaml">
+    <Page Include="Windows\AddWebSourceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditWebSourceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

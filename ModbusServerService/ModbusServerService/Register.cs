@@ -6,11 +6,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
 
 namespace Intma.ModbusServerService.Configurator
 {
-    public class Register : Notify
+    public class Register : Notify, ICloneable
     {
         static public char PathDel { get; set; } = ',';
 
@@ -54,6 +55,10 @@ namespace Intma.ModbusServerService.Configurator
         }
         public Register()
         {
+        }
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

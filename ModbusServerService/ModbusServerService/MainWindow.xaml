@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:WebSourceControle="Ed"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Конфигуратор" Height="450" Width="800">
+        Title="Конфигураторация ModBus сервиса" Height="450" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition  Height="50"/>
@@ -14,15 +15,14 @@
         </Grid.RowDefinitions>
 
          <Grid Grid.Row="0" Height="50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.6*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-
-                <StackPanel  Grid.Column="0" Margin="10 0 10 0" Orientation="Vertical">
+            <StackPanel  Grid.Column="0" Margin="10 0 10 0" Orientation="Vertical">
                     <TextBlock>Адрес modbus сервера:</TextBlock>
                     <TextBox Height="25" Text="{Binding ModbusServerAddress}"></TextBox>
                 </StackPanel>
@@ -35,44 +35,138 @@
                 <TextBox Height="25" Text="{Binding Duration}"></TextBox>
             </StackPanel>
             <StackPanel  Grid.Column="4" Margin="10 0 10 0" Orientation="Vertical">
-                    <Button  Margin="0 12 0 0" Height="25" Width="auto" IsEnabled="true" Click="AddReg_Click">
-                        <TextBlock>Добавить</TextBlock>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                <Button  Margin="0 12 0 0" Height="25" Width="auto" IsEnabled="true" Click="WebSourceAddWindow_Click">
+                    <TextBlock>Добавить</TextBlock>
+                </Button>
+            </StackPanel>
+         </Grid>
         <!-- -->
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Path=WebSources}" SelectedItem="{Binding SelectedSource}" ScrollViewer.CanContentScroll="False" VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" BorderBrush="LightGray"  AutoGenerateColumns="False" IsReadOnly="True" x:Name="dgWebSource"  >
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Источник"  Width="3*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding WebAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
 
-                <DataGridTemplateColumn >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button IsEnabled="True" Content="Редактировать"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
-                                              Path=DataContext.OpenEditWindow}"
+            <TreeView Grid.Column="0"  x:Name="treeView1" PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown" ItemsSource="{Binding Childs}" TreeView.SelectedItemChanged="Item_Selected" Background="#FFE4E4E4" FontSize="18" FontFamily="Century Gothic " Foreground="{x:Null}" BorderBrush="#FFE4E4E4">
+                <TreeView.Resources>
+                    <ContextMenu x:Key="RegistersGroupMenu"  StaysOpen="true">
+                        <MenuItem Header="Удалить" Click="GroupDeleteWindow_Click"/>
+                        <MenuItem Header="Дублировать" Click="GroupDublicateWindow_Click"/>
+                        <MenuItem Header="Свойства" Click="GroupPropertyWindow_Click"/>
+                    </ContextMenu>
+                    <ContextMenu x:Key="WebSourceMenu"  StaysOpen="true">
+                        <MenuItem Header="Добавить" Click="RegistersGroupAddWindow_Click"/>
+                        <MenuItem Header="Удалить" Click="WebSourceDeleteWindow_Click"/>
+                        <MenuItem Header="Дублировать" Click="WebSourceDublicateWindow_Click"/>
+                        <MenuItem Header="Свойства" Click="WebSourcePropertyWindow_Click"/>
+                    </ContextMenu>
+                    <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFD9F4FF" Offset="0"/>
+                    <GradientStop Color="#FF9BDDFB" Offset="1"/>
+                </LinearGradientBrush>
+                <LinearGradientBrush x:Key="{x:Static SystemColors.ControlBrushKey}" EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFEEEDED" Offset="0"/>
+                    <GradientStop Color="#FFDDDDDD" Offset="1"/>
+                </LinearGradientBrush>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+            </TreeView.Resources>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="ContextMenu" Value="{StaticResource WebSourceMenu}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <Setter Property="BorderThickness" Value="1.5"/>
+                    <Style.Triggers>
+                            <DataTrigger Binding="{Binding Type}" Value="WebSourceViewModel">
+                                <Setter Property="ContextMenu" Value="{StaticResource WebSourceMenu}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="RegistersGroupViewModel">
+                                <Setter Property="ContextMenu" Value="{StaticResource RegistersGroupMenu}"/>
+                            </DataTrigger>
+                            <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="#adc6e5"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsSelectionActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="BorderBrush" Value="LightGray"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="2"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+                </TreeView.ItemContainerStyle>
+
+                <TreeView.ItemTemplate >
+                    <HierarchicalDataTemplate  ItemsSource="{Binding Path=Childs}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            
+            <Grid Grid.Column="1" Name="groupGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Registers}" SelectedItem="{Binding SelectedRegister}" ScrollViewer.CanContentScroll="False" VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" BorderBrush="LightGray"  AutoGenerateColumns="False" IsReadOnly="True" x:Name="dgRegisters"  >
+                    <DataGrid.Columns>
+
+                        <DataGridTemplateColumn Header="Путь"  Width="2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Регистр"  Width="1*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding ValueRegister, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn  Header="Второй регистр(*)" Width="1*" Binding="{Binding SecondRegister, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DataGridTemplateColumn Header="Тип данных">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="90">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button IsEnabled="True" Content="Дублировать"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                              Path=DataContext.DublicateCommand}"
                             CommandParameter="{Binding}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                    
-                <DataGridTemplateColumn >
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button IsEnabled="True" Content="X"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn >
+                        
+                            <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button IsEnabled="True" Content="X"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
                                               Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
         <!-- Footer-->
             <Grid Background="#FFF0F0F0"  Grid.Row="2"  HorizontalAlignment="Stretch" Margin="10 0 10 0" >
             <Grid.ColumnDefinitions>
@@ -88,57 +182,3 @@
         </Grid>
     </Grid>
 </Window>
-
-<!--
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition  Height="50"/>
-                <RowDefinition />
-                <RowDefinition Height="30" />
-            </Grid.RowDefinitions>
-
-           
-
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Registers}" SelectedItem="{Binding SelectedRegister}" ScrollViewer.CanContentScroll="False" VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" BorderBrush="LightGray"  AutoGenerateColumns="False" IsReadOnly="True" x:Name="dgRegisters"  >
-                <DataGrid.Columns>
-
-                    <DataGridTemplateColumn Header="Путь"  Width="3*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Регистр"  Width="1*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding ValueRegister, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTextColumn  Header="Второй регистр(*)" Width="1*" Binding="{Binding SecondRegister, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <DataGridTemplateColumn Header="Тип данных">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ComboBox ItemsSource="{Binding DataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDataType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn >
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button IsEnabled="True" Content="X"  BorderThickness="0"  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
-                                              Path=DataContext.DeleteCommand}"
-                            CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-
-
-        </Grid> -->
