@@ -24,49 +24,43 @@ namespace Intma.ModbusServerService.Configurator.Windows
         {
             InitializeComponent();
             AddedWebSource = new WebSourceViewModel();
+            DataContext = AddedWebSource;
         }
         public AddWebSourceWindow(WebSourceViewModel addedWebSource)
         {
             InitializeComponent();
             AddedWebSource = addedWebSource;
-            tbDur.Text = AddedWebSource.Duration.ToString();
-            tbAddress.Text = AddedWebSource.WebAddress;
-            tbName.Text = AddedWebSource.Name;
+            DataContext = (WebSourceViewModel)addedWebSource.Clone();
             onEdit = true;
             btnAccept.Content = "Принять";
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(tbDur.Text))
-            {
-                MessageBox.Show("Поле с частотой опроса должно быть заполнено!");
-                return;
-            }
-            if (String.IsNullOrEmpty(tbAddress.Text))
+            var source = (WebSourceViewModel)DataContext;
+            if (String.IsNullOrEmpty(source.WebAddress.Replace(@"http:\\", "")))
             {
                 MessageBox.Show("Поле с адресом должно быть заполнено!");
                 return;
             }
-            if (String.IsNullOrEmpty(tbName.Text))
+            if (String.IsNullOrEmpty(source.Name))
             {
                 MessageBox.Show("Поле с именем должно быть заполнено!");
                 return;
             }
-            int value;
-            if (int.TryParse(tbDur.Text, out value))
-                AddedWebSource.Duration = value;
-            else
+            if (source.Duration <= 0)
             {
-                MessageBox.Show("Не удалось распознать номер регистра");
+                MessageBox.Show("Неверно указана частота");
                 return;
             }
-            AddedWebSource.WebAddress = tbAddress.Text;
-            AddedWebSource.Name = tbName.Text;
+            if (onEdit) { 
+                AddedWebSource.Duration = source.Duration;
+                AddedWebSource.Name = source.Name;
+                AddedWebSource.WebAddress = source.WebAddress;
+            }
             MessageBox.Show(onEdit?"Запись успешно редактирована":"Запись успешно добавлена!");
             IsAdded = true;
             Close();
         }
-
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();

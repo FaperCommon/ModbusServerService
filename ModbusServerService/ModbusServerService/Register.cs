@@ -16,7 +16,7 @@ namespace Intma.ModbusServerService.Configurator
         static public char PathDel { get; set; } = ',';
 
         private int _valueRegister;
-        public ObservableCollection<string> _dataType = new ObservableCollection<string>(new string[] { "Word", "Float", "Int","Short","Long" });
+        public ObservableCollection<string> _dataType = new ObservableCollection<string>(new string[] { "Float", "Int","Short" });
         private List<string> _path;
         private string _selectedDataType;
 
@@ -29,7 +29,7 @@ namespace Intma.ModbusServerService.Configurator
             get { return _selectedDataType; }
             set
             {
-                if (value == "Float" || value == "Int" || value == "Long")
+                if (value == "Float" || value == "Int")
                     NeedTwoRegisters = true;
                 else NeedTwoRegisters = false;
 
@@ -38,14 +38,19 @@ namespace Intma.ModbusServerService.Configurator
                 OnPropertyChanged();
             }
         }
+
         public int SecondRegister { get { return NeedTwoRegisters? ValueRegister + 1 : -1; } }
+
         public string Path
         {
             get { return _path == null ? "" : String.Join(PathDel.ToString(), _path); }
             set { _path = new List<string>(value.Split(new char[] { PathDel })); OnPropertyChanged(); }
         }
+
         public object Value { get; set; }
+
         public bool NeedTwoRegisters { get; set; }
+
         public Register(XElement reg)
         {
             Path = string.Join(PathDel.ToString(), reg.Element("Path").Elements().Select(a => a.Value));
@@ -53,12 +58,24 @@ namespace Intma.ModbusServerService.Configurator
             ValueRegister = Int32.Parse(reg.Element("ValueRegister").Value);
             NeedTwoRegisters = Boolean.Parse(reg.Element("NeedTwoRegisters").Value);
         }
+
         public Register()
         {
         }
+
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public override string ToString()
+        {
+            return $"\"{Path}\",\"{400000 + ValueRegister}\"";  //Server have a registers size is 6 digit, writing into holding registers
+        }
+
+        public string ToString(string parent)
+        {
+            return $"\"{parent}{Path.Replace(",","")}\",\"{400000 + ValueRegister}\"";
         }
     }
 }

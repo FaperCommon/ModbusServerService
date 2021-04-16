@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -40,6 +41,10 @@ namespace Intma.ModbusServerService.Configurator
                 var item = (RegistersGroupViewModel)treeView1.SelectedItem;
                 groupGrid.DataContext = item;
             }
+            else
+            {
+                groupGrid.DataContext = null;
+            }
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
@@ -74,6 +79,18 @@ namespace Intma.ModbusServerService.Configurator
             }
         }
 
+        private void RegistersAddWindow_Click(object sender, RoutedEventArgs e)
+        {
+            if(groupGrid.DataContext is RegistersGroupViewModel) { 
+                var wA = new Windows.AddRegisterWindow();
+                wA.ShowDialog();
+                if (wA.IsAdded)
+                {
+                    ((RegistersGroupViewModel)groupGrid.DataContext).Registers.Add(wA.AddedRegister);
+                }
+            }
+        }
+
         private void WebSourcePropertyWindow_Click(object sender, RoutedEventArgs e)
         {
 
@@ -105,6 +122,26 @@ namespace Intma.ModbusServerService.Configurator
             {
                 var removed = (RegistersGroupViewModel)treeView1.SelectedItem;
                 _regVM.Childs.First(a => a.Childs.Contains(removed)).Childs.Remove(removed);
+            }
+        }
+
+        private void ExportForKepServer_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV Files (*.csv) | *.csv";
+            saveFileDialog.DefaultExt = "csv";
+            if (saveFileDialog.ShowDialog() == true) { 
+                File.WriteAllText(saveFileDialog.FileName, ((WebSourceViewModel)treeView1.SelectedItem).ExportTopicForKepServer());
+            }
+        }
+
+        private void ExportTopicForWonderware_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV Files (*.csv) | *.csv";
+            saveFileDialog.DefaultExt = "csv";
+            if (saveFileDialog.ShowDialog() == true) { 
+                File.WriteAllText(saveFileDialog.FileName, ((WebSourceViewModel)treeView1.SelectedItem).ExportTopicForWonderware());
             }
         }
 

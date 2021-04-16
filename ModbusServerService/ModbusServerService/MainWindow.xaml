@@ -24,40 +24,44 @@
 
             <StackPanel  Grid.Column="0" Margin="10 0 10 0" Orientation="Vertical">
                     <TextBlock>Адрес modbus сервера:</TextBlock>
-                    <TextBox Height="25" Text="{Binding ModbusServerAddress}"></TextBox>
+                    <TextBox IsEnabled="False" Height="25" Text="{Binding ModbusServerAddress}"></TextBox>
                 </StackPanel>
                 <StackPanel  Grid.Column="1" Margin="10 0 10 0" Orientation="Vertical">
                     <TextBlock>Порт:</TextBlock>
-                    <TextBox Height="25" Text="{Binding Port}"></TextBox>
+                    <TextBox IsEnabled="False" Height="25" Text="{Binding Port}"></TextBox>
                 </StackPanel>
             <StackPanel  Grid.Column="2" Margin="10 0 10 0" Orientation="Vertical">
-                <TextBlock>Частота опроса:</TextBlock>
+                <TextBlock>Частота опроса, (с):</TextBlock>
                 <TextBox Height="25" Text="{Binding Duration}"></TextBox>
             </StackPanel>
-            <StackPanel  Grid.Column="4" Margin="10 0 10 0" Orientation="Vertical">
+            <StackPanel  Grid.Column="3" Margin="10 0 10 0" Orientation="Vertical">
                 <Button  Margin="0 12 0 0" Height="25" Width="auto" IsEnabled="true" Click="WebSourceAddWindow_Click">
                     <TextBlock>Добавить</TextBlock>
                 </Button>
             </StackPanel>
          </Grid>
-        <!-- -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
 
+            <!--Tree-->
             <TreeView Grid.Column="0"  x:Name="treeView1" PreviewMouseRightButtonDown="OnPreviewMouseRightButtonDown" ItemsSource="{Binding Childs}" TreeView.SelectedItemChanged="Item_Selected" Background="#FFE4E4E4" FontSize="18" FontFamily="Century Gothic " Foreground="{x:Null}" BorderBrush="#FFE4E4E4">
                 <TreeView.Resources>
                     <ContextMenu x:Key="RegistersGroupMenu"  StaysOpen="true">
-                        <MenuItem Header="Удалить" Click="GroupDeleteWindow_Click"/>
                         <MenuItem Header="Дублировать" Click="GroupDublicateWindow_Click"/>
+                        <MenuItem Header="Удалить" Click="GroupDeleteWindow_Click"/>
+                        <Separator/>
                         <MenuItem Header="Свойства" Click="GroupPropertyWindow_Click"/>
                     </ContextMenu>
                     <ContextMenu x:Key="WebSourceMenu"  StaysOpen="true">
                         <MenuItem Header="Добавить" Click="RegistersGroupAddWindow_Click"/>
-                        <MenuItem Header="Удалить" Click="WebSourceDeleteWindow_Click"/>
                         <MenuItem Header="Дублировать" Click="WebSourceDublicateWindow_Click"/>
+                        <MenuItem Header="Выгрузить в CSV (KepServer)" Click="ExportForKepServer_Click"/>
+                        <MenuItem Header="Выгрузить в CSV (Wonderware)" Click="ExportTopicForWonderware_Click"/>
+                        <MenuItem Header="Удалить" Click="WebSourceDeleteWindow_Click"/>
+                        <Separator/>
                         <MenuItem Header="Свойства" Click="WebSourcePropertyWindow_Click"/>
                     </ContextMenu>
                     <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
@@ -111,14 +115,18 @@
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            
-            <Grid Grid.Column="1" Name="groupGrid">
+            <!--Right Window-->
+                <Grid Grid.Column="1" Name="groupGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Registers}" SelectedItem="{Binding SelectedRegister}" ScrollViewer.CanContentScroll="False" VerticalGridLinesBrush="LightGray" HorizontalGridLinesBrush="LightGray" BorderBrush="LightGray"  AutoGenerateColumns="False" IsReadOnly="True" x:Name="dgRegisters"  >
+                    <DataGrid.ContextMenu>
+                        <ContextMenu  StaysOpen="true">
+                            <MenuItem Header="Добавить" Click="RegistersAddWindow_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
                     <DataGrid.Columns>
-
                         <DataGridTemplateColumn Header="Путь"  Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

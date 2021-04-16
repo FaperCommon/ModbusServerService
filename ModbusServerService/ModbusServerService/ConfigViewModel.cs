@@ -54,14 +54,12 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (wA.IsAdded)
             {
-                //MessageBox.Show(wA.AddedRegistersGroup.Name);
                 SelectedSource.Childs.Add(wA.AddedRegistersGroup);
             }
         }
         private void AddGroup()
         {
             MessageBox.Show("WebDelete");
-            //Childs.Remove(SelectedRegister);
         }
         private ICommand _registersGroupAddCommand;
         public ICommand RegistersGroupAddCommand
@@ -153,6 +151,7 @@ namespace Intma.ModbusServerService.Configurator
                                     new XElement("DataType", reg.SelectedDataType),
                                     new XElement("Path",
                                     reg.Path.Split(Register.PathDel).Select(path => new XElement(path, path)))))))))))));
+
             XDocument s = new XDocument(contacts);
             s.Save(filepath);
         }

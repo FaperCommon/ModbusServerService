@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Intma.ModbusServerService.Configurator.Windows"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Добавление регистра" Height="400" Width="400">
+        Title="Добавление регистра" Height="340" Width="400">
     <Grid>
         <Grid >
             <Grid.RowDefinitions>
@@ -14,29 +14,25 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Content="Путь в XML (Через запутяную ',')" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <TextBox  Grid.Row="0"  Name="tbPath" Height="25" Width="auto" Margin="10 30 10 10" VerticalAlignment="Bottom"/>
+            <Label Grid.Row="0" Content="Путь в XML (Через запутяную ','):" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <TextBox  Grid.Row="0" Text="{Binding Path}" Name="tbPath" Height="25" Width="auto" Margin="10 30 10 10" VerticalAlignment="Bottom"/>
 
            
-            <Label Grid.Row="1" Content="Тип Данных" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <ComboBox  Grid.Row="1" IsEditable="True" Name="cmbType" Margin="10 30 10 10" Height="25" Width="auto" IsEnabled="true" IsReadOnly="True" />
+            <Label Grid.Row="1" Content="Тип Данных:" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <ComboBox ItemsSource="{Binding DataType}" SelectedItem="{Binding SelectedDataType}" Grid.Row="1" IsEditable="True" Name="cmbType" Margin="10 30 10 10" Height="25" Width="auto" IsEnabled="true" IsReadOnly="True" />
             
-            <Label Grid.Row="2" Content="Регистр" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <TextBox   Grid.Row="2"  Name="tbReg1" Height="25" Width="auto" Margin="10 30 10 10" VerticalAlignment="Bottom" TextChanged="CmbReg1_TextChanged"/>
+            <Label Grid.Row="2" Content="Регистр:" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <TextBox Text="{Binding ValueRegister}" Grid.Row="2"  Name="tbReg1" Height="25" Width="auto" Margin="10 30 10 10" VerticalAlignment="Bottom" TextChanged="CmbReg1_TextChanged"/>
 
-            <Label Grid.Row="3" Content="Регистр для мантиссы (Для Float, авто)" Margin="10 0 0 0" Height="auto" Width="auto" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            <TextBox  Grid.Row="3" IsEnabled="False" Name="tbReg2" Height="25" Width="auto" Margin="10 30 10 10" VerticalAlignment="Bottom"/>
-            
-            <Separator Grid.Row="4" Margin="0 -28 0 0" BorderBrush="DarkGray" ></Separator>
-            <Separator Grid.Row="4" Margin="5,-20,5,0" BorderBrush="LightSteelBlue" ></Separator>
+            <Separator Grid.Row="3" Margin="0 -28 0 0" BorderBrush="DarkGray" ></Separator>
+            <Separator Grid.Row="3" Margin="5,-20,5,0" BorderBrush="LightSteelBlue" ></Separator>
 
-            <Button Grid.Row="4" Content ="Добавить" Height="auto" Width="auto" VerticalAlignment="Bottom" 
+            <Button Grid.Row="3" Content ="Добавить" Height="auto" Width="auto" VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left" Margin="30 30 0 15" Padding="6 3 6 3" 
                 Click="ButtonAdd_Click" FontSize="14"/>
-            <Button Grid.Row="4" Content ="Отмена" Height="auto" Width="auto" VerticalAlignment="Bottom" 
+            <Button Grid.Row="3" Content ="Отмена" Height="auto" Width="auto" VerticalAlignment="Bottom" 
                 HorizontalAlignment="Left" Margin="118 30 0 15" Padding="6 3 6 3" FontSize="14"
                 Click="ButtonCancel_Click"/>
         </Grid>

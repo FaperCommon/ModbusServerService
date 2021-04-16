@@ -26,24 +26,28 @@ namespace Intma.ModbusServerService.Configurator.Windows
         {
             InitializeComponent();
             AddedRegistersGroup = new RegistersGroupViewModel();
+            DataContext = AddedRegistersGroup;
         }
         public AddRegGroupWindow(RegistersGroupViewModel addedRegistersGroup)
         {
             InitializeComponent();
             AddedRegistersGroup = addedRegistersGroup;
-            tbName.Text = AddedRegistersGroup.Name;
+            DataContext = (RegistersGroupViewModel)addedRegistersGroup.Clone();
             onEdit = true;
             btnAccept.Content = "Принять";
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(tbName.Text))
+            var group = (RegistersGroupViewModel)DataContext;
+            if (String.IsNullOrEmpty(group.Name))
             {
                 MessageBox.Show("Поле с именем должно быть заполнено!");
                 return;
             }
-            
-            AddedRegistersGroup.Name = tbName.Text;
+            if (onEdit) { 
+                AddedRegistersGroup.Name = group.Name;
+            }
+
             MessageBox.Show(onEdit ? "Запись успешно редактирована" : "Запись успешно добавлена!");
             IsAdded = true;
             Close();

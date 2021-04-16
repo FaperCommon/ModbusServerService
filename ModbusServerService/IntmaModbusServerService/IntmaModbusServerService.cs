@@ -24,8 +24,8 @@ namespace Intma.ModbusServerService
         protected override void OnStart(string[] args)
         {
             httpXmlReader.ReConfigur();
-            Thread loggerThread = new Thread(new ThreadStart(httpXmlReader.Start));
-            loggerThread.Start();
+            Thread serviceThread = new Thread(new ThreadStart(httpXmlReader.Start));
+            serviceThread.Start();
         }
 
 

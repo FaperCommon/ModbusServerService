@@ -14,31 +14,26 @@ namespace Intma.ModbusServerService.Configurator.Windows
         {
             InitializeComponent();
             AddedRegister = new Register();
-            cmbType.ItemsSource = AddedRegister.DataType;
+            DataContext = AddedRegister;
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(tbReg1.Text))
+            if (AddedRegister.ValueRegister < 0)
             {
                 MessageBox.Show("Поле с номером регистра должно быть заполнено");
                 return;
             }
-            if (String.IsNullOrEmpty(tbPath.Text))
+            if (String.IsNullOrEmpty(AddedRegister.Path))
             {
-                MessageBox.Show("Поле с номером регистра должно быть заполнено");
+                MessageBox.Show("Поле с путем должно быть заполнено");
                 return;
             }
-
-            int value;
-            if (int.TryParse(tbReg1.Text, out value))
-                AddedRegister.ValueRegister = value;
-            else
+            if (String.IsNullOrEmpty(AddedRegister.SelectedDataType))
             {
-                MessageBox.Show("Не удалось распознать номер регистра");
+                MessageBox.Show("Тип данных не выбран!");
                 return;
             }
-            AddedRegister.SelectedDataType = cmbType.SelectedItem.ToString();
-            AddedRegister.Path = tbPath.Text;
+           
             MessageBox.Show("Запись успешно добавлена!");
             IsAdded = true;
             Close();

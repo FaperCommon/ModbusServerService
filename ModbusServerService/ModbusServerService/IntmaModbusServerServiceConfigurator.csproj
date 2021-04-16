@@ -80,9 +80,6 @@
     <Compile Include="Windows\AddWebSourceWindow.xaml.cs">
       <DependentUpon>AddWebSourceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EditWebSourceWindow.xaml.cs">
-      <DependentUpon>EditWebSourceWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Notify.cs" />
     <Compile Include="Register.cs" />
     <Compile Include="ConfigViewModel.cs" />
@@ -98,10 +95,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddWebSourceWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\EditWebSourceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
