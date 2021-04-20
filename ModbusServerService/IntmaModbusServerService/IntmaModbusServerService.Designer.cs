@@ -28,14 +28,6 @@ namespace Intma.ModbusServerService
         {
             _components = new System.ComponentModel.Container();
             this.ServiceName = "IntmaModbusServerService";
-            httpXmlReader = new HttpXmlReader();
-        }
-
-        internal void TestStartupAndStop(string[] args)
-        {
-            this.OnStart(args);
-            Console.ReadLine();
-            this.OnStop();
         }
         #endregion  
     }

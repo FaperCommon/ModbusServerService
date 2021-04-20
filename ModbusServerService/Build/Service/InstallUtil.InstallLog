@@ -1,0 +1,110 @@
+﻿
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+На этапе установки возникло исключение.
+System.ArgumentException: Источник IntmaModbusServerService уже существует на локальном компьютере.
+
+Начинается этап отката процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап отката выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+На этапе установки возникло исключение.
+System.ArgumentException: Источник IntmaModbusServerService уже существует на локальном компьютере.
+
+Начинается этап отката процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап отката выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+На этапе установки возникло исключение.
+System.ArgumentException: Источник IntmaModbusServerService уже существует на локальном компьютере.
+
+Начинается этап отката процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап отката выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап установки успешно выполнен, начинается этап фиксации.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап фиксации выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+На этапе установки возникло исключение.
+System.ComponentModel.Win32Exception: Указанная служба уже существует
+
+Начинается этап отката процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап отката выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап установки успешно выполнен, начинается этап фиксации.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап фиксации выполнен успешно.
+
+Групповая операция установки выполнена.
+
+Выполняется групповая операция установки.
+
+Начинается этап установки процедуры установки.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап установки успешно выполнен, начинается этап фиксации.
+См. файл журнала выполнения операция для сборки C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.
+Данный файл находится в C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.InstallLog.
+
+Этап фиксации выполнен успешно.
+
+Групповая операция установки выполнена.

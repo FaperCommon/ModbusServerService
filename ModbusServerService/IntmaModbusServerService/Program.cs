@@ -11,20 +11,12 @@ namespace Intma.ModbusServerService
     {
         static void Main(string[] args)
         {
-            if (Environment.UserInteractive)
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[]
             {
-                IntmaModbusServerService service1 = new IntmaModbusServerService();
-                service1.TestStartupAndStop(args);
-            }
-            else
-            {
-                ServiceBase[] ServicesToRun;
-                ServicesToRun = new ServiceBase[]
-                {
                 new IntmaModbusServerService()
-                };
-                ServiceBase.Run(ServicesToRun);
-            }
+            };
+            ServiceBase.Run(ServicesToRun);
         }
     }
 }

@@ -68,7 +68,20 @@ namespace Intma.ModbusServerService.Configurator
                 _regVM.Childs.Add(wA.AddedWebSource);
             }
         }
-   
+
+        private void AutoRegisters_Click(object sender, RoutedEventArgs e)
+        {
+            int i = 1;
+            foreach (var source in _regVM.Childs)
+                foreach (var group in source.Childs)
+                    foreach (var reg in group.Registers)
+                    {
+                        reg.ValueRegister = i++;
+                        if (reg.NeedTwoRegisters)
+                            i++;
+                    }
+        }
+
         private void RegistersGroupAddWindow_Click(object sender, RoutedEventArgs e)
         {
             var wA = new Windows.AddRegGroupWindow();

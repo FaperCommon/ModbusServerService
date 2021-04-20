@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Intma.ModbusServerService
 {
@@ -17,32 +18,33 @@ namespace Intma.ModbusServerService
         {
             InitializeComponent();
             this.CanStop = true;
-            this.CanPauseAndContinue = true;
-            this.AutoLog = true;
         }
 
         protected override void OnStart(string[] args)
         {
-            httpXmlReader.ReConfigur();
-            Thread serviceThread = new Thread(new ThreadStart(httpXmlReader.Start));
+            Thread serviceThread = new Thread(new ThreadStart(InitTimer));
             serviceThread.Start();
         }
 
+        System.Timers.Timer timer;
+        protected void InitTimer() {
 
-        protected override void OnPause()
-        {
-            httpXmlReader.Pause();
-            Thread.Sleep(1000);
+            httpXmlReader = new HttpXmlReader();
+            timer = new System.Timers.Timer();
+            timer.Interval = httpXmlReader.Config.Duration * 1000; 
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+            timer.Start();
         }
-        protected override void OnContinue()
+
+        private void OnTimer(object sender, ElapsedEventArgs e)
         {
-            httpXmlReader.ReConfigur();
-            httpXmlReader.Continue();
+            httpXmlReader.UpdateValue();
         }
+
         protected override void OnStop()
         {
-            httpXmlReader.Stop();
-            Thread.Sleep(1000);
+            timer.Stop();
+            httpXmlReader.Dispose();
         }
     }
 }
