@@ -19,26 +19,26 @@ namespace Intma.ModbusServerService.Configurator.Windows
     /// </summary>
     public partial class AddRegGroupWindow : Window
     {
-        public RegistersGroupViewModel AddedRegistersGroup { get; }
+        public RegistersGroup AddedRegistersGroup { get; }
         public bool IsAdded { get; set; } = false;
         public bool onEdit;
         public AddRegGroupWindow()
         {
             InitializeComponent();
-            AddedRegistersGroup = new RegistersGroupViewModel();
+            AddedRegistersGroup = new RegistersGroup();
             DataContext = AddedRegistersGroup;
         }
-        public AddRegGroupWindow(RegistersGroupViewModel addedRegistersGroup)
+        public AddRegGroupWindow(RegistersGroup addedRegistersGroup)
         {
             InitializeComponent();
             AddedRegistersGroup = addedRegistersGroup;
-            DataContext = (RegistersGroupViewModel)addedRegistersGroup.Clone();
+            DataContext = (RegistersGroup)addedRegistersGroup.Clone();
             onEdit = true;
             btnAccept.Content = "Принять";
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            var group = (RegistersGroupViewModel)DataContext;
+            var group = (RegistersGroup)DataContext;
             if (String.IsNullOrEmpty(group.Name))
             {
                 MessageBox.Show("Поле с именем должно быть заполнено!");

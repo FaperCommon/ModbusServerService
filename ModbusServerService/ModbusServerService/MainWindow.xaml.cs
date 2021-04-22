@@ -10,17 +10,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 
+//refactor, recode to MVVM
+//
+
 namespace Intma.ModbusServerService.Configurator
 {
     public partial class MainWindow : Window
     {
-
-        public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";//
-        ConfigViewModel _regVM;
+        
+        public string Filepath { get; set; } = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
+        Config _regVM;
         public MainWindow()
         {
             InitializeComponent();
-            _regVM = new ConfigViewModel();
+            _regVM = new Config();
             DataContext = _regVM;
             string dir = @"C:\INTMABW500MBTCPService";
             if (!Directory.Exists(dir))
@@ -36,9 +39,9 @@ namespace Intma.ModbusServerService.Configurator
 
         private void Item_Selected(object sender, RoutedEventArgs e)
         {
-            if (treeView1.SelectedItem is RegistersGroupViewModel)
+            if (treeView1.SelectedItem is RegistersGroup)
             {
-                var item = (RegistersGroupViewModel)treeView1.SelectedItem;
+                var item = (RegistersGroup)treeView1.SelectedItem;
                 groupGrid.DataContext = item;
             }
             else
@@ -88,18 +91,18 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (wA.IsAdded)
             {
-                ((WebSourceViewModel)treeView1.SelectedItem).Childs.Add(wA.AddedRegistersGroup);
+                ((WebSource)treeView1.SelectedItem).Childs.Add(wA.AddedRegistersGroup);
             }
         }
 
         private void RegistersAddWindow_Click(object sender, RoutedEventArgs e)
         {
-            if(groupGrid.DataContext is RegistersGroupViewModel) { 
+            if(groupGrid.DataContext is RegistersGroup) { 
                 var wA = new Windows.AddRegisterWindow();
                 wA.ShowDialog();
                 if (wA.IsAdded)
                 {
-                    ((RegistersGroupViewModel)groupGrid.DataContext).Registers.Add(wA.AddedRegister);
+                    ((RegistersGroup)groupGrid.DataContext).Registers.Add(wA.AddedRegister);
                 }
             }
         }
@@ -107,13 +110,13 @@ namespace Intma.ModbusServerService.Configurator
         private void WebSourcePropertyWindow_Click(object sender, RoutedEventArgs e)
         {
 
-            var wA = new Windows.AddWebSourceWindow((WebSourceViewModel)treeView1.SelectedItem);
+            var wA = new Windows.AddWebSourceWindow((WebSource)treeView1.SelectedItem);
             wA.ShowDialog();
         }
 
         private void GroupPropertyWindow_Click(object sender, RoutedEventArgs e)
         {
-            var wA = new Windows.AddRegGroupWindow((RegistersGroupViewModel)treeView1.SelectedItem);
+            var wA = new Windows.AddRegGroupWindow((RegistersGroup)treeView1.SelectedItem);
             wA.ShowDialog();
         }
 
@@ -123,7 +126,7 @@ namespace Intma.ModbusServerService.Configurator
 
             if (result == MessageBoxResult.Yes)
             {
-                _regVM.Childs.Remove((WebSourceViewModel)treeView1.SelectedItem);
+                _regVM.Childs.Remove((WebSource)treeView1.SelectedItem);
             }
         }
 
@@ -133,7 +136,7 @@ namespace Intma.ModbusServerService.Configurator
 
             if (result == MessageBoxResult.Yes)
             {
-                var removed = (RegistersGroupViewModel)treeView1.SelectedItem;
+                var removed = (RegistersGroup)treeView1.SelectedItem;
                 _regVM.Childs.First(a => a.Childs.Contains(removed)).Childs.Remove(removed);
             }
         }
@@ -144,7 +147,7 @@ namespace Intma.ModbusServerService.Configurator
             saveFileDialog.Filter = "CSV Files (*.csv) | *.csv";
             saveFileDialog.DefaultExt = "csv";
             if (saveFileDialog.ShowDialog() == true) { 
-                File.WriteAllText(saveFileDialog.FileName, ((WebSourceViewModel)treeView1.SelectedItem).ExportTopicForKepServer());
+                File.WriteAllText(saveFileDialog.FileName, ((WebSource)treeView1.SelectedItem).ExportTopicForKepServer());
             }
         }
 
@@ -154,23 +157,23 @@ namespace Intma.ModbusServerService.Configurator
             saveFileDialog.Filter = "CSV Files (*.csv) | *.csv";
             saveFileDialog.DefaultExt = "csv";
             if (saveFileDialog.ShowDialog() == true) { 
-                File.WriteAllText(saveFileDialog.FileName, ((WebSourceViewModel)treeView1.SelectedItem).ExportTopicForWonderware());
+                File.WriteAllText(saveFileDialog.FileName, ((WebSource)treeView1.SelectedItem).ExportTopicForWonderware());
             }
         }
 
         private void GroupDublicateWindow_Click(object sender, RoutedEventArgs e)
         {
-            var orig = ((RegistersGroupViewModel)treeView1.SelectedItem);
+            var orig = ((RegistersGroup)treeView1.SelectedItem);
             var source =  _regVM.Childs.First(a => a.Childs.Contains(orig));
-            var clone = (RegistersGroupViewModel)orig.Clone();
-            source.Childs.Insert(source.Childs.IndexOf(orig) + 1, (RegistersGroupViewModel)clone.Clone());
+            var clone = (RegistersGroup)orig.Clone();
+            source.Childs.Insert(source.Childs.IndexOf(orig) + 1, (RegistersGroup)clone.Clone());
         }
 
         private void WebSourceDublicateWindow_Click(object sender, RoutedEventArgs e)
         {
-            var source = ((WebSourceViewModel)treeView1.SelectedItem);
-            var clone = (WebSourceViewModel)source.Clone();
-            _regVM.Childs.Insert(_regVM.Childs.IndexOf(source) + 1, (WebSourceViewModel)clone.Clone());
+            var source = ((WebSource)treeView1.SelectedItem);
+            var clone = (WebSource)source.Clone();
+            _regVM.Childs.Insert(_regVM.Childs.IndexOf(source) + 1, (WebSource)clone.Clone());
         }
 
         private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)

@@ -10,27 +10,27 @@ using System.Xml.Linq;
 
 namespace Intma.ModbusServerService.Configurator
 {
-    public class ConfigViewModel : Notify
+    public class Config : Notify
     {
         string _port;
         string _modbusServerAdress;
-        ObservableCollection<WebSourceViewModel> _webSources;
+        ObservableCollection<WebSource> _webSources;
         int _duration;
         public int Duration { get => _duration; set { _duration = value; OnPropertyChanged(); } }
         public string Port { get => _port; set { _port = value; OnPropertyChanged(); } }
         public string ModbusServerAddress { get => _modbusServerAdress; set { _modbusServerAdress = value; OnPropertyChanged(); } }
-        public ObservableCollection<WebSourceViewModel> Childs { get => _webSources; set { _webSources = value; OnPropertyChanged(); } }
+        public ObservableCollection<WebSource> Childs { get => _webSources; set { _webSources = value; OnPropertyChanged(); } }
         public string Type { get; } = "ConfigViewModel";
 
-        public ConfigViewModel()
+        public Config()
         {
             Port = "502";
             ModbusServerAddress = "0.0.0.0";
             Duration = 5;
-            Childs = new ObservableCollection<WebSourceViewModel>();
+            Childs = new ObservableCollection<WebSource>();
         }
-        WebSourceViewModel _selectedSource;
-        public WebSourceViewModel SelectedSource
+        WebSource _selectedSource;
+        public WebSource SelectedSource
         {
             get { return _selectedSource; }
             set
@@ -39,82 +39,83 @@ namespace Intma.ModbusServerService.Configurator
                 OnPropertyChanged();
             }
         }
-        private void DeleteSelected()
-        {
-            Childs.Remove(SelectedSource);
-        }
-        private void EditSelected()
-        {
-            //var wA = new EditWebSourceWindow(SelectedSource);
-            //wA.ShowDialog();
-        }
-        private void AddIntoSelected()
-        {
-            var wA = new Windows.AddRegGroupWindow();
-            wA.ShowDialog();
-            if (wA.IsAdded)
-            {
-                SelectedSource.Childs.Add(wA.AddedRegistersGroup);
-            }
-        }
-        private void AddGroup()
-        {
-            MessageBox.Show("WebDelete");
-        }
-        private ICommand _registersGroupAddCommand;
-        public ICommand RegistersGroupAddCommand
-        {
-            get
-            {
-                if (_registersGroupAddCommand == null)
-                {
-                    _registersGroupAddCommand = new RelayCommand(param => AddGroup(), param => true/*CanOperate*/);
-                }
-                return _registersGroupAddCommand;
-            }
-        }
-        private ICommand _addCommand;
-        public ICommand AddCommand
-        {
-            get
-            {
-                if (_addCommand == null)
-                {
-                    _addCommand = new RelayCommand(param => AddIntoSelected(), param => CanOperate);
-                }
-                return _addCommand;
-            }
-        }
 
-        private ICommand _editCommand;
-        public ICommand EditCommand
-        {
-            get
-            {
-                if (_editCommand == null)
-                {
-                    _editCommand = new RelayCommand(param => EditSelected(), param => CanOperate);
-                }
-                return _editCommand;
-            }
-        }
+        //private void DeleteSelected()
+        //{
+        //    Childs.Remove(SelectedSource);
+        //}
+        //private void EditSelected()
+        //{
+        //    //var wA = new EditWebSourceWindow(SelectedSource);
+        //    //wA.ShowDialog();
+        //}
+        //private void AddIntoSelected()
+        //{
+        //    var wA = new Windows.AddRegGroupWindow();
+        //    wA.ShowDialog();
+        //    if (wA.IsAdded)
+        //    {
+        //        SelectedSource.Childs.Add(wA.AddedRegistersGroup);
+        //    }
+        //}
+        //private void AddGroup()
+        //{
+        //    MessageBox.Show("WebDelete");
+        //}
+        //private ICommand _registersGroupAddCommand;
+        //public ICommand RegistersGroupAddCommand
+        //{
+        //    get
+        //    {
+        //        if (_registersGroupAddCommand == null)
+        //        {
+        //            _registersGroupAddCommand = new RelayCommand(param => AddGroup(), param => true/*CanOperate*/);
+        //        }
+        //        return _registersGroupAddCommand;
+        //    }
+        //}
+        //private ICommand _addCommand;
+        //public ICommand AddCommand
+        //{
+        //    get
+        //    {
+        //        if (_addCommand == null)
+        //        {
+        //            _addCommand = new RelayCommand(param => AddIntoSelected(), param => CanOperate);
+        //        }
+        //        return _addCommand;
+        //    }
+        //}
 
-        private ICommand _deleteCommand;
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                if (_deleteCommand == null)
-                {
-                    _deleteCommand = new RelayCommand(param => DeleteSelected(), param =>CanOperate);
-                }
-                return _deleteCommand;
-            }
-        }
-        private bool CanOperate
-        {
-            get { return SelectedSource != null; }
-        }
+        //private ICommand _editCommand;
+        //public ICommand EditCommand
+        //{
+        //    get
+        //    {
+        //        if (_editCommand == null)
+        //        {
+        //            _editCommand = new RelayCommand(param => EditSelected(), param => CanOperate);
+        //        }
+        //        return _editCommand;
+        //    }
+        //}
+
+        //private ICommand _deleteCommand;
+        //public ICommand DeleteCommand
+        //{
+        //    get
+        //    {
+        //        if (_deleteCommand == null)
+        //        {
+        //            _deleteCommand = new RelayCommand(param => DeleteSelected(), param =>CanOperate);
+        //        }
+        //        return _deleteCommand;
+        //    }
+        //}
+        //private bool CanOperate
+        //{
+        //    get { return SelectedSource != null; }
+        //}
 
 
         public void ConfingRead(string filepath)
@@ -124,10 +125,10 @@ namespace Intma.ModbusServerService.Configurator
             ModbusServerAddress = el.Element("ModbusServerAddress").Value;
             Port = el.Element("Port").Value;
             Duration = Int32.Parse(el.Element("Duration").Value);
-            Childs = new ObservableCollection<WebSourceViewModel>();
+            Childs = new ObservableCollection<WebSource>();
             foreach (var source in el.Element("Sources").Elements())
             {
-                Childs.Add(new WebSourceViewModel(source));
+                Childs.Add(new WebSource(source));
             }
         }
 
@@ -148,7 +149,7 @@ namespace Intma.ModbusServerService.Configurator
                                 new XElement("Registers", weight.Registers.Select((reg, k) => new XElement($"Reg{k}",
                                     new XElement("NeedTwoRegisters", reg.NeedTwoRegisters),
                                     new XElement("ValueRegister", reg.ValueRegister),
-                                    new XElement("DataType", reg.SelectedDataType),
+                                    new XElement("DataType", reg.DataType),
                                     new XElement("Path",
                                     reg.Path.Split(Register.PathDel).Select(path => new XElement(path, path)))))))))))));
 

@@ -8,14 +8,14 @@ using System.Xml.Linq;
 
 namespace Intma.ModbusServerService.Configurator
 {
-    public class RegistersGroupViewModel : Notify, ICloneable
+    public class RegistersGroup : Notify, ICloneable
     {
         string _name;
         public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
         ObservableCollection<Register> _registers;
         public string Type { get; } = "RegistersGroupViewModel";
 
-        public RegistersGroupViewModel(XElement source)
+        public RegistersGroup(XElement source)
         {
             Name = source.Element("Name").Value;
             Registers = new ObservableCollection<Register>();
@@ -24,11 +24,12 @@ namespace Intma.ModbusServerService.Configurator
                 Registers.Add(new Register(reg));
             }
         }
-        public RegistersGroupViewModel()
+        public RegistersGroup()
         {
             Registers = new ObservableCollection<Register>();
         }
         public ObservableCollection<Register> Registers { get => _registers; set { _registers = value; OnPropertyChanged(); } }
+
         Register _selectedRegister;
         public Register SelectedRegister
         {
@@ -39,23 +40,25 @@ namespace Intma.ModbusServerService.Configurator
                 OnPropertyChanged();
             }
         }
-        
+
         private bool CanOperate
         {
             get { return SelectedRegister != null; }
         }
+
         private void DeleteSelected()
         {
             Registers.Remove(SelectedRegister);
         }
+
         private void DublicateSelected()
         {
-            Registers.Insert(Registers.IndexOf(SelectedRegister) + 1,(Register)SelectedRegister.Clone());
+            Registers.Insert(Registers.IndexOf(SelectedRegister) + 1, (Register)SelectedRegister.Clone());
         }
 
         public object Clone()
         {
-            var clone = (RegistersGroupViewModel)this.MemberwiseClone();
+            var clone = (RegistersGroup)this.MemberwiseClone();
             clone.Registers = new ObservableCollection<Register>();
             foreach(var reg in Registers)
             {
@@ -65,6 +68,7 @@ namespace Intma.ModbusServerService.Configurator
             clone._dublicateCommand = null;
             return clone;
         }
+
         private ICommand _dublicateCommand;
         public ICommand DublicateCommand
         {
@@ -97,11 +101,12 @@ namespace Intma.ModbusServerService.Configurator
                 sb.AppendFormat("{0}\n", reg.ToString(Name));
             return sb.ToString();
         }
+
         public string ToStringForKepServer()
         {
             StringBuilder sb = new StringBuilder();
             foreach (var reg in Registers)
-                sb.Append($"{reg.ToString(Name)},{reg.SelectedDataType},1,R/W,1000,,,,,,,,,,\"\",\n");
+                sb.Append($"{reg.ToString(Name)},{reg.DataType},1,R/W,1000,,,,,,,,,,\"\",\n");
             return sb.ToString();
         }
     }

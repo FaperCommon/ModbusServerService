@@ -17,31 +17,41 @@ namespace Intma.ModbusServerService
         System.Diagnostics.EventLog _eventLog;
         string _configFilePath = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
         string _logFilePath = @"C:\INTMABW500MBTCPService\IntmaModbusServerService.log";
-        public ConfigViewModel Config { get; }
+        public Config Config { get; }
 
         public HttpXmlReader()
         {
-            try { 
+            try
+            {
+                EventLogInit();
                 _modbusServer = new ModbusServer();
-                Config = new ConfigViewModel();
+                Config = new Config();
                 ReConfigur();
                 StartServer();
+            }
+            catch(Exception ex)
+            {
+                _eventLog.WriteEntry($"Constructor ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
+        }
+        private void EventLogInit()
+        {
+            try
+            {
                 if (!System.Diagnostics.EventLog.SourceExists("IntmaModbusServerServiceSource"))
-                    System.Diagnostics.EventLog.CreateEventSource("IntmaModbusServerServiceSource", "IntmaModbusServerService_EventLog");
+                System.Diagnostics.EventLog.CreateEventSource("IntmaModbusServerServiceSource", "IntmaModbusServerService_EventLog");
 
                 _eventLog = new System.Diagnostics.EventLog()
                 {
-                    Log = "IntmaModbusServerService EventLog",
+                    Log = "IntmaModbusServerService_EventLog",
                     Source = "IntmaModbusServerServiceSource"
                 };
             }
             catch
             {
-
             }
         }
-
-        public void GetValue(WebSourceViewModel webSource)
+        public void GetValue(WebSource webSource)
         {
             try
             {
@@ -71,11 +81,11 @@ namespace Intma.ModbusServerService
             }
             catch (Exception ex)
             {
-                _eventLog.WriteEntry($"Web Read ex {webSource.WebAddress}: " + ex.Message);
+                _eventLog.WriteEntry($"Web Read ex {webSource.WebAddress}: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
             }
         }
 
-        public IList<RegistersGroupViewModel> XmlParse(StreamReader streamReader, IList<RegistersGroupViewModel> registersGroups)
+        public IList<RegistersGroup> XmlParse(StreamReader streamReader, IList<RegistersGroup> registersGroups)
         {
             try
             {
@@ -104,8 +114,8 @@ namespace Intma.ModbusServerService
             }
             catch (Exception ex)
             {
-                _eventLog.WriteEntry("Xml Parse ex: " + ex.Message);
-                return new List<RegistersGroupViewModel>();
+                _eventLog.WriteEntry("Xml Parse ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+                return new List<RegistersGroup>();
             }
         }
 
@@ -113,14 +123,14 @@ namespace Intma.ModbusServerService
         {
             try
             {
-                _modbusServer.LogFileFilename = _logFilePath;
+               // _modbusServer.LogFileFilename = _logFilePath;
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 _modbusServer.Listen();
                 _eventLog.WriteEntry(_modbusServer.LocalIPAddress + ", Server started!");
             }
             catch (Exception ex)
             {
-                _eventLog.WriteEntry("Start server ex: " + ex.Message);
+                _eventLog.WriteEntry("Start server ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
             }
         }
 
@@ -133,7 +143,7 @@ namespace Intma.ModbusServerService
                 byte[] buff4b;
                 if (reg.NeedTwoRegisters)
                 {
-                    if (reg.SelectedDataType == "Float")
+                    if (reg.DataType == "Float")
                     {
                         buff4b = BitConverter.GetBytes(Single.Parse(reg.Value.ToString()));
                     }
@@ -156,9 +166,10 @@ namespace Intma.ModbusServerService
             }
             catch (Exception ex)
             {
-                _eventLog.WriteEntry($"Write reg ex (group {groupName}, reg {reg.Path}): " + ex.Message);
+                _eventLog.WriteEntry($"Write reg ex (group {groupName}, reg {reg.Path}): " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
             }
         }
+
         public void UpdateValue()
         {
             try { 
@@ -166,7 +177,7 @@ namespace Intma.ModbusServerService
             }
             catch(Exception ex)
             {
-                _eventLog.WriteEntry($"UpdateValue ex: " + ex.Message);
+                _eventLog.WriteEntry($"UpdateValue ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
             }
         }
 

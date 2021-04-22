@@ -16,27 +16,27 @@ namespace Intma.ModbusServerService.Configurator.Windows
 {
     public partial class AddWebSourceWindow : Window
     {
-        public WebSourceViewModel AddedWebSource { get; }
+        public WebSource AddedWebSource { get; }
         public bool IsAdded { get; set; } = false;
 
         private bool onEdit;
         public AddWebSourceWindow()
         {
             InitializeComponent();
-            AddedWebSource = new WebSourceViewModel();
+            AddedWebSource = new WebSource();
             DataContext = AddedWebSource;
         }
-        public AddWebSourceWindow(WebSourceViewModel addedWebSource)
+        public AddWebSourceWindow(WebSource addedWebSource)
         {
             InitializeComponent();
             AddedWebSource = addedWebSource;
-            DataContext = (WebSourceViewModel)addedWebSource.Clone();
+            DataContext = (WebSource)addedWebSource.Clone();
             onEdit = true;
             btnAccept.Content = "Принять";
         }
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            var source = (WebSourceViewModel)DataContext;
+            var source = (WebSource)DataContext;
             if (String.IsNullOrEmpty(source.WebAddress.Replace(@"http:\\", "")))
             {
                 MessageBox.Show("Поле с адресом должно быть заполнено!");
