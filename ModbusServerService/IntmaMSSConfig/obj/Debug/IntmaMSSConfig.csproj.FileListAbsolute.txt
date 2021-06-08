@@ -1,0 +1,5 @@
+C:\Users\INTMA-KA\source\repos\IntmaMSSConfigView\IntmaMSSConfig\bin\Debug\IntmaMSSConfig.dll
+C:\Users\INTMA-KA\source\repos\IntmaMSSConfigView\IntmaMSSConfig\bin\Debug\IntmaMSSConfig.pdb
+C:\Users\INTMA-KA\source\repos\IntmaMSSConfigView\IntmaMSSConfig\obj\Debug\IntmaMSSConfig.csproj.CoreCompileInputs.cache
+C:\Users\INTMA-KA\source\repos\IntmaMSSConfigView\IntmaMSSConfig\obj\Debug\IntmaMSSConfig.dll
+C:\Users\INTMA-KA\source\repos\IntmaMSSConfigView\IntmaMSSConfig\obj\Debug\IntmaMSSConfig.pdb

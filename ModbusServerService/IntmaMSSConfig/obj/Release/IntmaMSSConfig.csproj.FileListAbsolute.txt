@@ -1,0 +1,6 @@
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\bin\Release\IntmaMSSConfig.dll
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\bin\Release\IntmaMSSConfig.pdb
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.csprojAssemblyReference.cache
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.csproj.CoreCompileInputs.cache
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.dll
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.pdb

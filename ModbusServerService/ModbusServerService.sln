@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntmaModbusServerServiceConfigurator", "ModbusServerService\IntmaModbusServerServiceConfigurator.csproj", "{974CA3A2-F81E-42F1-866B-4813FD930D99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntmaMSSConfigView", "IntmaMSSConfigView\IntmaMSSConfigView.csproj", "{974CA3A2-F81E-42F1-866B-4813FD930D99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntmaModbusServerService", "IntmaModbusServerService\IntmaModbusServerService.csproj", "{11CC9832-E880-4049-BBC7-A79206EDAF17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntmaMSSConfig", "IntmaMSSConfig\IntmaMSSConfig.csproj", "{8445ABC0-8F38-4A21-9E66-6EE7399C269A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{11CC9832-E880-4049-BBC7-A79206EDAF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11CC9832-E880-4049-BBC7-A79206EDAF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11CC9832-E880-4049-BBC7-A79206EDAF17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8445ABC0-8F38-4A21-9E66-6EE7399C269A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8445ABC0-8F38-4A21-9E66-6EE7399C269A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8445ABC0-8F38-4A21-9E66-6EE7399C269A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8445ABC0-8F38-4A21-9E66-6EE7399C269A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

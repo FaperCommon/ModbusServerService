@@ -9,14 +9,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
 namespace Intma.ModbusServerService
 {
     class HttpXmlReader : IDisposable
     {
         ModbusServer _modbusServer;
         System.Diagnostics.EventLog _eventLog;
-        string _configFilePath = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
-        string _logFilePath = @"C:\INTMABW500MBTCPService\IntmaModbusServerService.log";
+       // string _configFilePath = @"C:\INTMABW500MBTCPService\INTMABW500MBTCPService.config";
+       // string _logFilePath = @"C:\INTMABW500MBTCPService\IntmaModbusServerService.log";
         public Config Config { get; }
 
         public HttpXmlReader()
@@ -34,6 +35,7 @@ namespace Intma.ModbusServerService
                 _eventLog.WriteEntry($"Constructor ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
             }
         }
+
         private void EventLogInit()
         {
             try
@@ -51,6 +53,7 @@ namespace Intma.ModbusServerService
             {
             }
         }
+
         public void GetValue(WebSource webSource)
         {
             try
@@ -72,7 +75,7 @@ namespace Intma.ModbusServerService
                             {
                                 readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
                             }
-                            foreach (var el in XmlParse(readStream, webSource.Childs))
+                            foreach (var el in XmlParse(readStream, webSource.RegistersGroups))
                                 foreach (var reg in el.Registers)
                                     WriteValue(reg, el.Name);
                         }
@@ -173,7 +176,7 @@ namespace Intma.ModbusServerService
         public void UpdateValue()
         {
             try { 
-                Parallel.ForEach(Config.Childs, GetValue);
+                Parallel.ForEach(Config.WebSources, GetValue);
             }
             catch(Exception ex)
             {
@@ -188,7 +191,7 @@ namespace Intma.ModbusServerService
 
         public void ReConfigur() 
         {
-            Config.ConfingRead(_configFilePath);
+            Config.ConfingRead();
         }
     }
 }

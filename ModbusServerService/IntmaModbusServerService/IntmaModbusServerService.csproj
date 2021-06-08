@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,9 +74,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ModbusServerService\IntmaModbusServerServiceConfigurator.csproj">
-      <Project>{974ca3a2-f81e-42f1-866b-4813fd930d99}</Project>
-      <Name>IntmaModbusServerServiceConfigurator</Name>
+    <ProjectReference Include="..\IntmaMSSConfig\IntmaMSSConfig.csproj">
+      <Project>{8445abc0-8f38-4a21-9e66-6ee7399c269a}</Project>
+      <Name>IntmaMSSConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

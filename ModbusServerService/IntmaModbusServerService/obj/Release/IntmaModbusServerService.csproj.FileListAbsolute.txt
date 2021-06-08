@@ -6,3 +6,11 @@ C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModb
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CopyComplete
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.exe
 C:\Users\INTMA-KA\source\repos\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\Build\Service\IntmaModbusServerService.exe.config
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\Build\Service\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\Build\Service\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csprojAssemblyReference.cache
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CoreCompileInputs.cache
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CopyComplete
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.pdb
