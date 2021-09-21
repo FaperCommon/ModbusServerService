@@ -54,11 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HttpXmlReader.cs" />
-    <Compile Include="Installer1.cs">
+    <Compile Include="IntmaMSSInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Installer1.Designer.cs">
-      <DependentUpon>Installer1.cs</DependentUpon>
+    <Compile Include="IntmaMSSInstaller.Designer.cs">
+      <DependentUpon>IntmaMSSInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="IntmaModbusServerService.cs">
       <SubType>Component</SubType>

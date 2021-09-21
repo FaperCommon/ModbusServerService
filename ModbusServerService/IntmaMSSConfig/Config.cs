@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -56,7 +55,6 @@ namespace Intma.ModbusServerService.Configurator
                     new XElement("Sources",
                         WebSources.Select((source, i) => new XElement($"Source{i}",
                             new XElement("Duration", source.Duration),
-                            new XElement("Name", source.Name),
                             new XElement("WebAddress", source.WebAddress),
                             new XElement("Weights", source.RegistersGroups.Select((weight, j) => new XElement($"Weight{j}",
                                 new XElement("Name", weight.Name),

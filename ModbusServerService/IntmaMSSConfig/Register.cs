@@ -54,7 +54,7 @@ namespace Intma.ModbusServerService.Configurator
         /// <summary>
         /// Server have a registers size is 6 digit, writing into holding registers
         /// </summary>
-        /// <returns>"Port.Tag","400000"</returns>
+        /// <returns>"Port.Tag"Delimeter"400000" + ValueRegister</returns>
         public override string ToString()
         {
             return $"\"{Path}\"{PathDel}\"{400000 + ValueRegister}\"";  
@@ -63,7 +63,7 @@ namespace Intma.ModbusServerService.Configurator
         /// Server have a registers size is 6 digit, writing into holding registers
         /// parent - unic groupName, just for show
         /// </summary>
-        /// <returns>"Port.Tag","400000"</returns>
+        /// <returns>"Port.Tag"Delimeter"400000" + ValueRegister</returns>
         public string ToString(string parent)
         {
             return $"\"{parent}{Path.Replace(",","")}\"{PathDel}\"{400000 + ValueRegister}\"";

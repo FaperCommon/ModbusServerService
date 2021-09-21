@@ -2,18 +2,20 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Intma.ModbusServerService.Configurator
 {
     public class WebSourceVM : TreeViewItem
     {
-        WebSource _webSource;
+        public WebSource WebSource { get; private set; }
         private RegistersGroupVM _selectedGroup;
 
-        override public string Name { get => _webSource.Name; set { _webSource.Name = value; OnPropertyChanged(); } }
-        public int Duration { get => _webSource.Duration; set => _webSource.Duration = value; }
-        public string WebAddress { get => _webSource.WebAddress; set => _webSource.WebAddress = value; }
+        override public string Name { get => WebSource.WebAddress; set => WebSource.WebAddress = value; }
+        public int Duration { get => WebSource.Duration; set => WebSource.Duration = value; }
+        public string WebAddress { get => WebSource.WebAddress; set => WebSource.WebAddress = value; }
         public RegistersGroupVM SelectedGroup { get => _selectedGroup; set { _selectedGroup = value; OnPropertyChanged(); } }
 
         public WebSourceVM(WebSource webSource)
@@ -27,10 +29,10 @@ namespace Intma.ModbusServerService.Configurator
                 new ContextAction() { Name = "Свойства", Action = PropertyShowCommand },
             };
 
-            _webSource = webSource;
+            WebSource = webSource;
             Childs = new BindingList<TreeViewItem>();
             Childs.ListChanged += Childs_ListChanged;
-            foreach (var group in _webSource.RegistersGroups)
+            foreach (var group in WebSource.RegistersGroups)
             {
                 Childs.Add(new RegistersGroupVM(group));
             }
@@ -40,10 +42,10 @@ namespace Intma.ModbusServerService.Configurator
         {
             if (e.NewIndex < Childs.Count && Childs.Count > 0)
             {
-
                 if (Childs[e.NewIndex].NeedDelete)
                 {
                     Childs.Remove(Childs[e.NewIndex]);
+                    SelectedGroup = null;
                 }
                 else if (Childs[e.NewIndex].NeedDublicate)
                 {
@@ -82,7 +84,7 @@ namespace Intma.ModbusServerService.Configurator
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, _webSource.ExportTopic(type));
+                File.WriteAllText(saveFileDialog.FileName, WebSource.ExportTopic(type));
             }
         }
 
@@ -100,7 +102,7 @@ namespace Intma.ModbusServerService.Configurator
         }
 
         override protected void PropertyShow()
-        {       
+        {
             var wA = new Windows.AddWebSourceWindow(this);
             wA.ShowDialog();
         }
@@ -113,14 +115,20 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (wA.IsAdded)
             {
-                _webSource.RegistersGroups.Add(group);
+                if (WebSource.RegistersGroups.Any(a => a.Name == group.Name))
+                {
+                    MessageBox.Show("Источник уже добавлен!");
+                    return;
+                }
+
+                WebSource.RegistersGroups.Add(group);
                 Childs.Add(wA.AddedRegistersGroup);
             }
         }
 
         override public object Clone()
         {
-            return new WebSourceVM((WebSource)_webSource.Clone());
+            return new WebSourceVM((WebSource)WebSource.Clone());
         }
     }
 }

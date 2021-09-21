@@ -1,6 +1,9 @@
-﻿namespace Intma.ModbusServerService
+﻿using System.Configuration.Install;
+using System.Diagnostics;
+
+namespace Intma.ModbusServerService
 {
-    partial class Installer1
+    partial class IntmaMSSInstaller
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -29,6 +32,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+
         }
 
         #endregion

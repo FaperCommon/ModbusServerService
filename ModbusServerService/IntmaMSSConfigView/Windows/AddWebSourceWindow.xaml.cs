@@ -16,7 +16,7 @@ namespace Intma.ModbusServerService.Configurator.Windows
 {
     public partial class AddWebSourceWindow : Window
     {
-        public WebSourceVM AddedWebSource { get; }
+        public WebSourceVM AddedWebSource { get; private set; }
         public bool IsAdded { get; set; } 
 
         private bool onEdit;
@@ -38,22 +38,18 @@ namespace Intma.ModbusServerService.Configurator.Windows
                 MessageBox.Show("Поле с адресом должно быть заполнено!");
                 return;
             }
-            if (String.IsNullOrEmpty(source.Name))
-            {
-                MessageBox.Show("Поле с именем должно быть заполнено!");
-                return;
-            }
+
             if (source.Duration <= 0)
             {
                 MessageBox.Show("Неверно указана частота");
                 return;
             }
+
             if (onEdit) { 
                 AddedWebSource.Duration = source.Duration;
-                AddedWebSource.Name = source.Name;
                 AddedWebSource.WebAddress = source.WebAddress;
             }
-            MessageBox.Show("Успешно!");
+
             IsAdded = true;
             Close();
         }

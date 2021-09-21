@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -70,6 +71,7 @@ namespace Intma.ModbusServerService.Configurator
         abstract public object Clone();
 
         public bool _isSelected;
+
         public bool IsSelected { get => _isSelected; set { _isSelected = value; OnPropertyChanged(); } }
     }
 }

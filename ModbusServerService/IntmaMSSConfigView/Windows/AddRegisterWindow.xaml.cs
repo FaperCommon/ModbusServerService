@@ -23,18 +23,19 @@ namespace Intma.ModbusServerService.Configurator.Windows
                 MessageBox.Show("Поле с номером регистра должно быть заполнено");
                 return;
             }
+
             if (String.IsNullOrEmpty(AddedRegister.Path))
             {
                 MessageBox.Show("Поле с путем должно быть заполнено");
                 return;
             }
+
             if (String.IsNullOrEmpty(AddedRegister.DataType))
             {
                 MessageBox.Show("Тип данных не выбран!");
                 return;
             }
            
-            MessageBox.Show("Запись успешно добавлена!");
             IsAdded = true;
             Close();
         }

@@ -16,35 +16,80 @@ namespace Intma.ModbusServerService
     {
         public IntmaModbusServerService()
         {
-            InitializeComponent();
-            this.CanStop = true;
+            try
+            {
+                this.AutoLog = false;
+                InitializeComponent();
+                this.CanStop = true;
+
+                if (!EventLog.SourceExists("IntmaModbusServerServiceSource"))
+                {
+                    EventLog.CreateEventSource("IntmaModbusServerServiceSource", "IntmaModbusServerService_EventLog");
+                    EventLog.WriteEntry("Log Created!");
+                }
+
+                EventLog.Source = "IntmaModbusServerServiceSource";
+                EventLog.Log = "IntmaModbusServerService_EventLog";
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry($"Construct ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
 
         protected override void OnStart(string[] args)
         {
-            Thread serviceThread = new Thread(new ThreadStart(InitTimer));
-            serviceThread.Start();
+            try
+            {
+                Thread serviceThread = new Thread(new ThreadStart(InitTimer));
+                serviceThread.Start();
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry($"OnStart ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
 
         System.Timers.Timer timer;
-        protected void InitTimer() {
-
-            httpXmlReader = new HttpXmlReader();
-            timer = new System.Timers.Timer();
-            timer.Interval = httpXmlReader.Config.Duration * 1000; 
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
-            timer.Start();
+        protected void InitTimer()
+        {
+            try
+            {
+                httpXmlReader = new HttpXmlReader(EventLog);
+                timer = new System.Timers.Timer();
+                timer.Interval = httpXmlReader.Config.Duration * 1000;
+                timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
+                timer.Start();
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry($"InitTimer ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
 
         private void OnTimer(object sender, ElapsedEventArgs e)
         {
-            httpXmlReader.UpdateValue();
+            try
+            {
+                httpXmlReader.UpdateValue();
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry($"OnTimer ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
 
         protected override void OnStop()
         {
-            timer.Stop();
-            httpXmlReader.Dispose();
+            try
+            {
+                timer.Stop();
+                httpXmlReader.Dispose();
+            }
+            catch (Exception ex)
+            {
+                EventLog.WriteEntry($"OnStop ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
     }
 }

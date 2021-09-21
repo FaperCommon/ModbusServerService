@@ -14,3 +14,11 @@ C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-maste
 C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CopyComplete
 C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.exe
 C:\Users\INTMA-KA\Downloads\ModbusServerService-master\ModbusServerService-master\ModbusServerService-master\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe.config
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\Build\Service\IntmaModbusServerService.pdb
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csprojAssemblyReference.cache
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CoreCompileInputs.cache
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.csproj.CopyComplete
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.exe
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaModbusServerService\obj\Release\IntmaModbusServerService.pdb

@@ -26,6 +26,7 @@ namespace Intma.ModbusServerService.Configurator
 
             _registersGroup = registersGroup;
             RegistersVM = new ObservableCollection<RegisterVM>();
+
             foreach (var reg in registersGroup.Registers)
             {
                 RegistersVM.Add(new RegisterVM(reg));
@@ -74,6 +75,7 @@ namespace Intma.ModbusServerService.Configurator
                 return _dublicateRegisterCommand;
             }
         }
+
         private ICommand _deleteRegisterCommand;
         public ICommand DeleteRegisterCommand
         {
@@ -102,6 +104,12 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (wA.IsAdded)
             {
+                if (_registersGroup.Registers.Any(a => a.Path == reg.Path))
+                {
+                    MessageBox.Show("Путь уже добавлен!");
+                    return;
+                }
+
                 RegistersVM.Add(regVM);
                 _registersGroup.Registers.Add(reg);
             }

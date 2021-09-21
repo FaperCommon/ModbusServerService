@@ -9,7 +9,6 @@ namespace Intma.ModbusServerService.Configurator
     {
         string _webAdress;
         public bool IsWebSource { get; set; } = true;
-        public string Name { get; set; }
         public int Duration { get; set; }
         public string WebAddress { get => $@"http:\\{_webAdress}"; set { _webAdress = value.Replace(@"http:\\", "");} }
         public string Type { get => nameof(WebSource); }
@@ -26,7 +25,7 @@ namespace Intma.ModbusServerService.Configurator
         {
             RegistersGroups = new ObservableCollection<RegistersGroup>();
             WebAddress = source.Element("WebAddress").Value;
-            Name = source.Element("Name").Value;
+            Duration = Int32.Parse(source.Element("Duration").Value);
 
             foreach (var weight in source.Element("Weights").Elements())
             {

@@ -43,7 +43,6 @@ namespace Intma.ModbusServerService.Configurator.Windows
                 AddedRegistersGroup.Name = group.Name;
             }
 
-            MessageBox.Show("Успешно!");
             IsAdded = true;
             Close();
         }

@@ -20,11 +20,12 @@ namespace Intma.ModbusServerService
        // string _logFilePath = @"C:\INTMABW500MBTCPService\IntmaModbusServerService.log";
         public Config Config { get; }
 
-        public HttpXmlReader()
+        public HttpXmlReader(System.Diagnostics.EventLog eventLog)
         {
             try
             {
-                EventLogInit();
+                _eventLog = eventLog;
+                //EventLogInit();
                 _modbusServer = new ModbusServer();
                 Config = new Config();
                 ReConfigur();
@@ -36,23 +37,23 @@ namespace Intma.ModbusServerService
             }
         }
 
-        private void EventLogInit()
-        {
-            try
-            {
-                if (!System.Diagnostics.EventLog.SourceExists("IntmaModbusServerServiceSource"))
-                System.Diagnostics.EventLog.CreateEventSource("IntmaModbusServerServiceSource", "IntmaModbusServerService_EventLog");
+        //private void EventLogInit()
+        //{
+        //    try
+        //    {
+        //        if (!System.Diagnostics.EventLog.SourceExists("IntmaModbusServerServiceSource"))
+        //            System.Diagnostics.EventLog.CreateEventSource("IntmaModbusServerServiceSource", "IntmaModbusServerService_EventLog");
 
-                _eventLog = new System.Diagnostics.EventLog()
-                {
-                    Log = "IntmaModbusServerService_EventLog",
-                    Source = "IntmaModbusServerServiceSource"
-                };
-            }
-            catch
-            {
-            }
-        }
+        //        _eventLog = new System.Diagnostics.EventLog()
+        //        {
+        //            Source = "IntmaModbusServerServiceSource",
+        //            Log = "IntmaModbusServerService_EventLog"
+        //        };
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
 
         public void GetValue(WebSource webSource)
         {
@@ -85,6 +86,10 @@ namespace Intma.ModbusServerService
             catch (Exception ex)
             {
                 _eventLog.WriteEntry($"Web Read ex {webSource.WebAddress}: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+                var rand = new Random();
+
+                Config.WebSources[0].RegistersGroups[0].Registers[0].Value = rand.NextDouble() * 1000;
+                WriteValue(Config.WebSources[0].RegistersGroups[0].Registers[0], Config.WebSources[0].RegistersGroups[0].Name);
             }
         }
 
@@ -126,7 +131,6 @@ namespace Intma.ModbusServerService
         {
             try
             {
-               // _modbusServer.LogFileFilename = _logFilePath;
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 _modbusServer.Listen();
                 _eventLog.WriteEntry(_modbusServer.LocalIPAddress + ", Server started!");
@@ -191,7 +195,13 @@ namespace Intma.ModbusServerService
 
         public void ReConfigur() 
         {
-            Config.ConfingRead();
+            try { 
+                Config.ConfingRead();
+            }
+            catch (Exception ex)
+            {
+                _eventLog.WriteEntry($"ReConfigur ex: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
+            }
         }
     }
 }

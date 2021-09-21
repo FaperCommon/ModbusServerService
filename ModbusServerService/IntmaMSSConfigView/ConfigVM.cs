@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -32,25 +33,42 @@ namespace Intma.ModbusServerService.Configurator
 
         private void Childs_ListChanged(object sender, ListChangedEventArgs e)
         {
-            if (e.NewIndex < Childs.Count && Childs.Count > 0)
+            try
             {
-                if (Childs[e.NewIndex].NeedDelete)
+                if (Childs.Count > 0 && e.NewIndex < Childs.Count)
                 {
-                    Childs.Remove(Childs[e.NewIndex]);
+                    if (Childs[e.NewIndex].NeedDelete)
+                    {
+                        
+                        var removedItem = Childs[e.NewIndex];
+                        removedItem.NeedDelete = false;
+                        removedItem.IsSelected = true;
+                        Childs.Remove(removedItem);
+                        _config.WebSources.Remove(removedItem.WebSource);
+                        SelectedSource = null;
+                        SelectedGroup = null;
+                    }
+                    else if (Childs[e.NewIndex].NeedDublicate)
+                    {
+                        Childs[e.NewIndex].NeedDublicate = false;
+                        var addedWebSource = (WebSourceVM)Childs[e.NewIndex].Clone();
+                        Childs.Insert(e.NewIndex + 1, addedWebSource);
+                        _config.WebSources.Add(addedWebSource.WebSource);
+                    }
+                    else
+                    {
+                        SelectedSource = Childs[e.NewIndex];
+                        SelectedGroup = Childs[e.NewIndex].SelectedGroup;
+                    }
                 }
-                else if (Childs[e.NewIndex].NeedDublicate)
+                else if (Childs.Count == 0)
                 {
-                    Childs[e.NewIndex].NeedDublicate = false;
-                    Childs.Insert(e.NewIndex + 1, (WebSourceVM)Childs[e.NewIndex].Clone());
-                }
-                else { 
-                    SelectedSource = Childs[e.NewIndex];
-                    SelectedGroup = Childs[e.NewIndex].SelectedGroup;
+                    SelectedGroup = null;
                 }
             }
-            else if (Childs.Count == 0)
+            catch(Exception ex)
             {
-                SelectedGroup = null;
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -102,6 +120,12 @@ namespace Intma.ModbusServerService.Configurator
             wA.ShowDialog();
             if (wA.IsAdded)
             {
+                if(_config.WebSources.Any(a => a.WebAddress == source.WebAddress))
+                {
+                    MessageBox.Show("Источник уже добавлен!");
+                    return;
+                }
+
                 _config.WebSources.Add(source);
                 Childs.Add(wA.AddedWebSource);
             }
