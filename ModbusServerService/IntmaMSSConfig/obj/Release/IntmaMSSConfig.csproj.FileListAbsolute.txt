@@ -11,3 +11,4 @@ C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServer
 C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.pdb
 C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\Build\Config\IntmaMSSConfig.dll
 C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\Build\Config\IntmaMSSConfig.pdb
+C:\Users\INTMA-KA\Desktop\Проекты\МЕС\ModbusServerService\ModbusServerService\IntmaMSSConfig\obj\Release\IntmaMSSConfig.csprojAssemblyReference.cache

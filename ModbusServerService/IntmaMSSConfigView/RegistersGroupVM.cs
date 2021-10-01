@@ -13,7 +13,7 @@ namespace Intma.ModbusServerService.Configurator
     {
         RegistersGroup _registersGroup;
         RegisterVM _selectedRegister;
-        override public string Name { get => _registersGroup.Name; set => _registersGroup.Name = value; }
+        override public string Name { get => _registersGroup.Name; set { _registersGroup.Name = value; OnPropertyChanged(); } }
         public ObservableCollection<RegisterVM> RegistersVM { get; }
         public RegistersGroupVM(RegistersGroup registersGroup)
         {

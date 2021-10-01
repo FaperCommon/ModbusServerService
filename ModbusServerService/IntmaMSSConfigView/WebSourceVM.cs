@@ -13,7 +13,7 @@ namespace Intma.ModbusServerService.Configurator
         public WebSource WebSource { get; private set; }
         private RegistersGroupVM _selectedGroup;
 
-        override public string Name { get => WebSource.WebAddress; set => WebSource.WebAddress = value; }
+        override public string Name { get => WebSource.WebAddress; set { WebSource.WebAddress = value; OnPropertyChanged(); } }
         public int Duration { get => WebSource.Duration; set => WebSource.Duration = value; }
         public string WebAddress { get => WebSource.WebAddress; set => WebSource.WebAddress = value; }
         public RegistersGroupVM SelectedGroup { get => _selectedGroup; set { _selectedGroup = value; OnPropertyChanged(); } }
@@ -105,6 +105,7 @@ namespace Intma.ModbusServerService.Configurator
         {
             var wA = new Windows.AddWebSourceWindow(this);
             wA.ShowDialog();
+            OnPropertyChanged("Name");
         }
 
         override protected void AddChild()

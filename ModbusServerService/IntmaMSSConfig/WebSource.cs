@@ -10,7 +10,7 @@ namespace Intma.ModbusServerService.Configurator
         string _webAdress;
         public bool IsWebSource { get; set; } = true;
         public int Duration { get; set; }
-        public string WebAddress { get => $@"http:\\{_webAdress}"; set { _webAdress = value.Replace(@"http:\\", "");} }
+        public string WebAddress { get => $@"http:\\{_webAdress}"; set { _webAdress = value.Replace(@"http:\\", ""); }}
         public string Type { get => nameof(WebSource); }
 
         public ObservableCollection<RegistersGroup> RegistersGroups { get; set; }
